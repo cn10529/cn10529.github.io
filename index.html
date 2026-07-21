@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows Embedded Compact 7 安装教程</title>
+    <style>
+        body {
+            font-family: 宋体, SimSun, serif;
+            margin: 72pt 90pt;
+            word-wrap: break-word;
+        }
+        h1 {
+            font-size: 36pt;
+            color: blue;
+            font-weight: bold;
+            font-family: 宋体, SimSun, serif;
+            margin: 0;
+        }
+        .sec1 {
+            font-size: 22pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 40.5pt;
+            text-indent: -40.5pt;
+        }
+        .sec2 {
+            font-size: 18pt;
+            color: blue;
+            margin-left: 76.5pt;
+            text-indent: -36pt;
+        }
+        .step-title {
+            font-size: 14pt;
+            color: black;
+            margin-left: 151.5pt;
+            text-indent: -54pt;
+        }
+        .step-content {
+            font-size: 14pt;
+            color: black;
+            margin-left: 151.5pt;
+        }
+        .normal-text {
+            font-size: 14pt;
+            color: black;
+        }
+        .final-text {
+            font-size: 22pt;
+            color: gray;
+            text-align: center;
+            font-family: 宋体, SimSun, serif;
+        }
+        .author {
+            font-size: 24pt;
+            color: #7F7F7F;
+            text-align: center;
+            font-family: "微软雅黑", sans-serif;
+            margin-top: 0;
+        }
+        .author-light {
+            font-family: "微软雅黑 Light", sans-serif;
+            font-weight: normal;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        /* 新增：控制作者链接的样式，保持原有视觉效果 */
+        .author a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .author a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Windows Embedded Compact 7 安装教程</h1>
+
+    <p class="normal-text">安装之前请先检查有没有安装 VS 2008 SP1，安装环境是否为 Windows 7，若没有，请参照<a href="vs2008.html">VS2008安装教程</a>来安装，注意版本 VS 必须是 SP1，否则将不能安装</p>
+
+    <p class="normal-text">这是您从网盘下载的文件：</p>
+    <p class="normal-text"><img src="img/wec700jc/image001.png" width="572" height="19" alt="下载的文件列表"></p>
+
+    <p class="normal-text">下面的教程是详细的安装的步骤：</p>
+
+    <h2 class="sec1">一、准备安装</h2>
+
+    <p class="step-title">1. 解压当前文件，进入目录</p>
+    <p class="step-content"><img src="img/wec700jc/image002.png" width="641" height="126" alt="解压目录"></p>
+
+    <p class="step-title">2. 进入文件夹“Microsoft Windows Embedded Compact 7”</p>
+    <p class="step-content"><img src="img/wec700jc/image003.png" width="651" height="129" alt="进入文件夹"></p>
+    <p class="step-content">就可以看到以下文件，这就是完整的 Windows Embedded Compact 7 开发环境安装包，这3个文件缺一不可：</p>
+    <p class="step-content"><img src="img/wec700jc/image004.png" width="602" height="65" alt="三个必要文件"></p>
+    <p class="step-content">将“dvd1.iso”“dvd2.iso”，分别解压或挂载镜像，放在旁边备用</p>
+
+    <h2 class="sec1">二、开始安装</h2>
+
+    <p class="step-title">1. 进入“dvd1.iso”或解压的目录，得到以下文件</p>
+    <p class="step-content"><img src="img/wec700jc/image005.png" width="577" height="252" alt="dvd1目录内容"></p>
+
+    <p class="step-title">2. 找到“WindowsEmbeddedCompact7.exe”，然后以管理员身份运行</p>
+    <p class="step-content"><img src="img/wec700jc/image006.png" width="595" height="290" alt="找到安装程序"></p>
+    <p class="step-content">就会出现以下界面</p>
+    <p class="step-content"><img src="img/wec700jc/image007.png" width="400" height="400" alt="安装启动画面1"></p>
+    <p class="step-content"><img src="img/wec700jc/image008.png" width="818" height="538" alt="安装启动画面2"></p>
+
+    <p class="step-title">3. 点击开始安装</p>
+    <p class="step-content"><img src="img/wec700jc/image009.png" width="814" height="534" alt="点击开始安装"></p>
+
+    <p class="step-title">4. 勾选协议后继续</p>
+    <p class="step-content"><img src="img/wec700jc/image010.png" width="814" height="534" alt="许可协议"></p>
+    <p class="step-content"><img src="img/wec700jc/image011.png" width="814" height="534" alt="勾选协议"></p>
+    <p class="step-content"><img src="img/wec700jc/image012.png" width="814" height="534" alt="继续安装"></p>
+
+    <p class="step-title">5. 此时要求输入产品序列号，将刚才解压的目录中的“license.txt”打开，里面就是序列号，直接输入或粘贴即可(PW28V-TRKP8-RW8JQ-QG8MF-23C7F），然后点击下一步</p>
+    <p class="step-content"><img src="img/wec700jc/image013.png" width="615" height="82" alt="序列号文件"></p>
+    <p class="step-content"><img src="img/wec700jc/image014.png" width="814" height="534" alt="输入序列号"></p>
+
+    <p class="step-title">6. 然后就会出现这个界面，因为有一些功能我们是用不到的，因为我们只要在虚拟机中运行，为了节省磁盘空间，我们选择自定义安装，然后点击下一步</p>
+    <p class="step-content"><img src="img/wec700jc/image015.png" width="814" height="534" alt="安装类型选择"></p>
+    <p class="step-content"><img src="img/wec700jc/image016.png" width="814" height="534" alt="自定义安装"></p>
+
+    <p class="step-title">7. 由于我们的主要目的是要在虚拟机中体验，所以只要核心部分 + x86 架构，选择前面4个选项+最后一个选项，然后点击下一步</p>
+    <p class="step-content"><img src="img/wec700jc/image017.png" width="814" height="534" alt="选择功能1"></p>
+    <p class="step-content"><img src="img/wec700jc/image018.png" width="814" height="534" alt="选择功能2"></p>
+
+    <p class="step-title">8. 现在到了准备就绪的界面了，检查无误后，点击“Install”开始安装</p>
+    <p class="step-content"><img src="img/wec700jc/image019.png" width="814" height="534" alt="准备安装"></p>
+    <p class="step-content"><img src="img/wec700jc/image020.png" width="814" height="534" alt="确认安装"></p>
+    <p class="step-content" style="color:#A6A6A6;">若您提示：</p>
+    <p class="step-content"><img src="img/wec700jc/image022.png" width="482" height="187" alt="空间不足提示"></p>
+    <p class="step-content" style="color:#A6A6A6;">请检查您的目标磁盘的剩余空间，腾出足够的空间再重新操作</p>
+
+    <p class="step-title">9. 现在，安装正式开始，不出意料的话肯定会弹出下面的弹窗</p>
+    <p class="step-content"><img src="img/wec700jc/image023.png" width="818" height="538" alt="安装过程"></p>
+    <p class="step-content"><img src="img/wec700jc/image024.png" width="622" height="269" alt="要求插入dvd2"></p>
+
+    <p class="step-title">10. 这个窗口是在提示我们需要插入 扩展资源镜像 也就是一开始解压目录的“dvd2.iso”，现在就排上用场了</p>
+    <p class="step-content">请先确保您已经插入“dvd2.iso”或已经解压到目录，然后点击“Browse...”浏览的按钮</p>
+    <p class="step-content"><img src="img/wec700jc/image025.png" width="622" height="269" alt="浏览按钮"></p>
+    <p class="step-content">在“浏览文件夹”窗口中进入“dvd2.iso”或者解压的目录，然后逐步展开“OS\processor\x86\”文件夹，然后点击“确定”</p>
+    <p class="step-content">
+        <img src="img/wec700jc/image026.png" width="334" height="384" alt="浏览1">
+        <img src="img/wec700jc/image027.png" width="334" height="384" alt="浏览2">
+        <img src="img/wec700jc/image028.png" width="334" height="384" alt="浏览3">
+        <img src="img/wec700jc/image029.png" width="334" height="384" alt="浏览4">
+    </p>
+    <p class="step-content">回到了这个界面，现在点击“OK”</p>
+    <p class="step-content"><img src="img/wec700jc/image030.png" width="622" height="269" alt="点击OK"></p>
+    <p class="step-content">就会发现正常继续安装了，此过程可能会花费十几分钟，希望您耐心等待！</p>
+    <p class="step-content"><img src="img/wec700jc/image031.png" width="818" height="538" alt="正在安装"></p>
+
+    <p class="step-title">11. 当您看到这个界面时，就说明 Windows Embedded Compact 7 的开发环境已经成功地安装了，直接点击“Finish”完成按钮完成安装</p>
+    <p class="step-content"><img src="img/wec700jc/image032.png" width="818" height="538" alt="安装完成"></p>
+
+    <p class="final-text">至此，Windows Embedded Compact 7 安装已经完成！</p>
+    <p class="final-text">感谢观看！</p>
+
+
+    <p class="author">
+        <a href="https://space.bilibili.com/3546662595201297" target="_blank" rel="noopener noreferrer">
+            <span class="author-light">By SYSTEM-</span><b>SZ</b><b> · </b><span class="author-light">bilbili</span>
+        </a>
+    </p>
+
+</body>
+</html>
