@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>OSDesign 架构树形图翻译</title>
+    <style>
+        body {
+            font-family: 宋体, SimSun, serif;
+            margin: 72pt 90pt;
+            word-wrap: break-word;
+            word-break: break-all;
+            background: #fff;
+            color: black;
+        }
+        /* 移除原有的h1样式，树形图根节点将承担标题职能 */
+        .author {
+            font-size: 24pt;
+            color: #7F7F7F;
+            text-align: center;
+            font-family: "微软雅黑", sans-serif;
+            margin-top: 0;
+        }
+        .author-light {
+            font-family: "微软雅黑 Light", sans-serif;
+            font-weight: normal;
+        }
+        .author a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .author a:hover {
+            text-decoration: underline;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #ccc;
+            margin: 30pt 0 20pt 0;
+        }
+        .tree {
+            font-size: 14pt;
+        }
+        .tree ul {
+            list-style: none;
+            padding-left: 20pt;
+            margin: 0;
+        }
+        .tree>ul {
+            padding-left: 0;
+        }
+        .tree li {
+            position: relative;
+            padding-left: 18pt;
+            margin: 2pt 0;
+        }
+        .tree li:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 12pt;
+            height: 10pt;
+            border-left: 1px solid #808080;
+            border-bottom: 1px solid #808080;
+        }
+        .tree li:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            border-left: 1px solid #808080;
+        }
+        .tree li:last-child:after {
+            height: 10pt;
+        }
+        /* 根节点 (li.root-node) 本身不画连线，但其内部子节点保持连线 */
+        .tree>ul>li.root-node:before,
+        .tree>ul>li.root-node:after {
+            display: none;
+        }
+        /* 根节点内嵌的ul需要重新建立连线基础 */
+        .tree>ul>li.root-node>ul {
+            padding-left: 20pt; /* 保持与子节点一致的缩进 */
+        }
+        .tree>ul>li.root-node>ul>li:before,
+        .tree>ul>li.root-node>ul>li:after {
+            /* 恢复默认连线，因为父级已经禁用 */
+        }
+        /* 确保根节点下的二级节点有连线 */
+        .tree>ul>li.root-node>ul>li {
+            position: relative;
+            padding-left: 18pt;
+            margin: 2pt 0;
+        }
+
+        .label,
+        .leaf-text {
+            font-size: 14pt;
+        }
+        .label {
+            font-weight: bold;
+            color: blue;
+        }
+
+        /* 根节点样式：最大的标题，蓝色加粗 */
+        .tree>ul>li.root-node>.root-label {
+            font-size: 36pt;
+            font-weight: bold;
+            color: blue;
+        }
+
+        /* 二级节点 (BSP, Core OS) */
+        .tree>ul>li.root-node>ul>li>.label,
+        .tree>ul>li.root-node>ul>li>.leaf-text {
+            font-size: 22pt;
+            font-weight: bold;
+            color: blue;
+        }
+        /* 三级节点 (BSP下的子项等) */
+        .tree>ul>li.root-node>ul>li>ul>li>.label,
+        .tree>ul>li.root-node>ul>li>ul>li>.leaf-text {
+            font-size: 18pt;
+            font-weight: bold;
+            color: blue;
+        }
+
+        /* 翻译内容缩小并淡色显示 */
+        .trans {
+            font-size: 0.75em;
+            color: #999;
+        }
+    </style>
+
+    <!--[if lte IE 7]>
+    <style>
+        .tree li {
+            position: static;
+            padding-left: 10pt;
+        }
+        .tree ul {
+            margin-left: 10pt;
+            padding-left: 10pt;
+            border-left: 1px solid #808080;
+        }
+        .tree>ul {
+            border-left: none;
+            margin-left: 0;
+            padding-left: 0;
+        }
+    </style>
+    <![endif]-->
+</head>
+<body>
+
+    <div class="tree">
+        <ul>
+            <li class="root-node">
+                <span class="root-label">OSDesign<span class="trans">（操作系统设计）</span></span>
+                <ul>
+                    <!-- BSP 分支开始 -->
+                    <li>
+                        <span class="label">BSP<span class="trans">（板级支持包，Board Support Package，硬件抽象与初始化）</span></span>
+                        <ul>
+                            <li><span class="leaf-text">BSP Template : ARMv5<span class="trans">（BSP模板：ARMv5架构）</span></span></li>
+                            <li><span class="leaf-text">BSP Template : ARMv6<span class="trans">（BSP模板：ARMv6架构）</span></span></li>
+                            <li><span class="leaf-text">BSP Template : ARMv7<span class="trans">（BSP模板：ARMv7架构）</span></span></li>
+                            <li><span class="leaf-text">BSP Template : MIPSII<span class="trans">（BSP模板：MIPSII架构）</span></span></li>
+                            <li><span class="leaf-text">BSP Template : MIPSII_FP<span class="trans">（BSP模板：带浮点单元MIPSII架构）</span></span></li>
+                            <li><span class="leaf-text">BSP Template : X86<span class="trans">（BSP模板：X86架构）</span></span></li>
+                            <li><span class="leaf-text">Generic CEPC : x86<span class="trans">（通用CEPC工控平台：X86）</span></span></li>
+                            <li><span class="leaf-text">ICOP eBox-3300 : x86<span class="trans">（ICOP eBox-3300工控机：X86）</span></span></li>
+                            <li>
+                                <span class="label">Virtual PC : x86<span class="trans">（虚拟PC：X86）</span></span>
+                                <ul>
+                                    <li>
+                                        <span class="label">Bootloader<span class="trans">（启动加载程序）</span></span>
+                                        <ul>
+                                            <li><span class="leaf-text">Ethernet Bootloader (eboot)<span class="trans">（以太网启动加载器eboot）</span></span></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <span class="label">Device Drivers<span class="trans">（设备驱动程序）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">Audio<span class="trans">（音频）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">SoundBlaster 16 Audio<span class="trans">（创新声霸16位音频驱动）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Keyboard<span class="trans">（键盘）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">VCEPC Keyboard driver:VPC2007<span class="trans">（VCEPC键盘驱动：VPC2007虚拟机）</span></span></li>
+                                                    <li><span class="leaf-text">VCEPC Keyboard driver:WIN7VPC<span class="trans">（VCEPC键盘驱动：WIN7虚拟机）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Networking<span class="trans">（网络）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">DEC 21x40 Ethernet<span class="trans">（DEC 21x40以太网网卡驱动）</span></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Core OS 分支开始 -->
+                    <li>
+                        <span class="label">Core OS<span class="trans">（核心操作系统）</span></span>
+                        <ul>
+                            <li>
+                                <span class="label">Windows Embedded Compact<span class="trans">（Windows 嵌入式紧凑型操作系统，原 Windows CE）</span></span>
+                                <ul>
+                                    <li>
+                                        <span class="label">Applications - End User<span class="trans">（应用程序 - 最终用户）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">ActiveSync<span class="trans">（同步软件，用于与 PC 同步数据）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">AirSync<span class="trans">（无线同步协议）</span></span></li>
+                                                    <li><span class="leaf-text">File Sync<span class="trans">（文件同步）</span></span></li>
+                                                    <li><span class="leaf-text">Inbox Sync<span class="trans">（收件箱同步）</span></span></li>
+                                                    <li><span class="leaf-text">Pocket Outlook Database Sync<span class="trans">（Pocket Outlook 数据库同步）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">CAB File Installer based on ConfigMgr v1 and CSPs<span class="trans">（基于 ConfigMgr v1 和 CSP 的 CAB 文件安装程序，CSP 即配置服务提供程序）</span></span></li>
+                                            <li><span class="leaf-text">CAB File Installer/Uninstaller<span class="trans">（CAB 文件安装/卸载程序）</span></span></li>
+                                            <li><span class="leaf-text">Help<span class="trans">（帮助）</span></span></li>
+                                            <li>
+                                                <span class="label">Remote Desktop Connection<span class="trans">（远程桌面连接）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Remote Desktop Protocol (RDP)<span class="trans">（远程桌面协议）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Audio Playback Redirection<span class="trans">（音频播放重定向）</span></span></li>
+                                                            <li><span class="leaf-text">Cut/Copy/Paste Clipboard Redirection<span class="trans">（剪切/复制/粘贴剪贴板重定向）</span></span></li>
+                                                            <li>
+                                                                <span class="label">File Storage Redirection<span class="trans">（文件存储重定向）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Filtered File Storage Redirection<span class="trans">（过滤文件存储重定向）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">License Information<span class="trans">（许可证信息）</span></span></li>
+                                                            <li><span class="leaf-text">Printer Redirection<span class="trans">（打印机重定向）</span></span></li>
+                                                            <li><span class="leaf-text">Remote Desktop Connection Licenses Applet<span class="trans">（远程桌面连接许可证小程序）</span></span></li>
+                                                            <li><span class="leaf-text">Serial and Parallel Port Redirection<span class="trans">（串行和并行端口重定向）</span></span></li>
+                                                            <li><span class="leaf-text">Smart Card Redirection<span class="trans">（智能卡重定向）</span></span></li>
+                                                            <li><span class="leaf-text">User Interface Dialog Boxes<span class="trans">（用户界面对话框）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Windows Network Projector<span class="trans">（Windows 网络投影仪）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Sample Network Projector UI<span class="trans">（示例网络投影仪用户界面）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Terminal Emulator<span class="trans">（终端仿真器）</span></span></li>
+                                            <li><span class="leaf-text">WordPad<span class="trans">（写字板）</span></span></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Applications and Services Development<span class="trans">（应用程序和服务开发）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">.NET Compact Framework 3.5<span class="trans">（嵌入式设备专用 .NET 框架 3.5）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">.NET Compact Framework 3.5</span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">.NET Compact Framework 3.5 Localized String Resources<span class="trans">（本地化字符串资源）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">String Resources Chinese(PRC)<span class="trans">（中文(中国)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources Chinese(Taiwan)<span class="trans">（中文(台湾)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources French(France)<span class="trans">（法语(法国)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources German(Germany)<span class="trans">（德语(德国)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources Italian(Italy)<span class="trans">（意大利语(意大利)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources Japanese(Japan)<span class="trans">（日语(日本)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources Korean(Korea)<span class="trans">（韩语(韩国)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources Portuguese(Brazil)<span class="trans">（葡萄牙语(巴西)字符串资源）</span></span></li>
+                                                                    <li><span class="leaf-text">String Resources Spanish(International Sort)<span class="trans">（西班牙语(国际排序)字符串资源）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">.NET Compact Framework 3.5 - Headless<span class="trans">（无头版本，无图形界面）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">.NET Compact Framework 3.5 String Resources - Headless</span>
+                                                                <ul>
+                                                                    <li>
+                                                                        <span class="label">.NET Compact Framework 3.5 Localized String Resources - Headless</span>
+                                                                        <ul>
+                                                                            <li><span class="leaf-text">String Resources Chinese(PRC) - Headless<span class="trans">（中文(中国)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources Chinese(Taiwan) - Headless<span class="trans">（中文(台湾)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources French(France) - Headless<span class="trans">（法语(法国)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources German(Germany) - Headless<span class="trans">（德语(德国)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources Italian(Italy) - Headless<span class="trans">（意大利语(意大利)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources Japanese(Japan) - Headless<span class="trans">（日语(日本)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources Korean(Korea) - Headless<span class="trans">（韩语(韩国)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources Portuguese(Brazil) - Headless<span class="trans">（葡萄牙语(巴西)字符串资源 - 无头版）</span></span></li>
+                                                                            <li><span class="leaf-text">String Resources Spanish(International Sort) - Headless<span class="trans">（西班牙语(国际排序)字符串资源 - 无头版）</span></span></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">OS Dependencies for .NET Compact Framework 3.5<span class="trans">（.NET Compact Framework 3.5 所需的操作系统依赖项）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">OS Dependencies for .NET Compact Framework 3.5</span></li>
+                                                            <li><span class="leaf-text">OS Dependencies for .NET Compact Framework 3.5 - Headless</span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Active Template Library (ATL)<span class="trans">（活动模板库）</span></span></li>
+                                            <li>
+                                                <span class="label">C Libraries and Runtimes<span class="trans">（C 库与运行时）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">C++ Runtime Support for Exception Handling and Runtime Type Information<span class="trans">（C++ 运行时支持：异常处理与运行时类型信息）</span></span></li>
+                                                    <li><span class="leaf-text">Full C Runtime<span class="trans">（完整 C 运行时库）</span></span></li>
+                                                    <li><span class="leaf-text">OEM Floating Point CRT (ARMv5 only)<span class="trans">（OEM 浮点 C 运行时库，仅限 ARMv5）</span></span></li>
+                                                    <li><span class="leaf-text">Standard I/O<span class="trans">（标准输入/输出）</span></span></li>
+                                                    <li><span class="leaf-text">Standard I/O - ASCII<span class="trans">（标准 I/O - ASCII 版本）</span></span></li>
+                                                    <li><span class="leaf-text">Standard String Formatted I/O - ASCII<span class="trans">（标准字符串格式化 I/O - ASCII 版本）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">CE Messaging API (MAPI)<span class="trans">（CE 消息 API，即消息应用编程接口）</span></span></li>
+                                            <li>
+                                                <span class="label">Component Services (COM and DCOM)<span class="trans">（组件服务，含 COM 和 DCOM）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Component Object Model<span class="trans">（组件对象模型）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">COM<span class="trans">（组件对象模型）</span></span></li>
+                                                            <li><span class="leaf-text">DCOM (No Remoting)<span class="trans">（DCOM，无远程处理）</span></span></li>
+                                                            <li><span class="leaf-text">Minimal COM (No OLE Support)<span class="trans">（最小 COM，无 OLE 支持）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Lightweight Directory Access Protocol (LDAP) Client<span class="trans">（轻量级目录访问协议客户端）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Location<span class="trans">（位置服务）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">GPS Intermediate Driver<span class="trans">（GPS 中间驱动程序）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Message Queuing (MSMQ)<span class="trans">（消息队列）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">MSMQ ActiveX Wrappers<span class="trans">（MSMQ ActiveX 封装）</span></span></li>
+                                                            <li><span class="leaf-text">MSMQ administration utility<span class="trans">（MSMQ 管理工具）</span></span></li>
+                                                            <li><span class="leaf-text">MSMQ GUI based administration<span class="trans">（MSMQ 图形化管理）</span></span></li>
+                                                            <li><span class="leaf-text">MSMQ remote configuration ISAPI extension<span class="trans">（MSMQ 远程配置 ISAPI 扩展）</span></span></li>
+                                                            <li><span class="leaf-text">SOAP Reliable Messaging Protocol (SRMP)<span class="trans">（SOAP 可靠消息协议）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Object Exchange Protocol (OBEX)<span class="trans">（对象交换协议）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">OBEX Client<span class="trans">（OBEX 客户端）</span></span></li>
+                                                            <li>
+                                                                <span class="label">OBEX Server<span class="trans">（OBEX 服务器）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">OBEX File Browser<span class="trans">（OBEX 文件浏览器）</span></span></li>
+                                                                    <li><span class="leaf-text">OBEX Inbox<span class="trans">（OBEX 收件箱）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Pocket Outlook Object Model (POOM) API<span class="trans">（Pocket Outlook 对象模型 API）</span></span></li>
+                                                    <li><span class="leaf-text">Smart Devices<span class="trans">（智能设备支持）</span></span></li>
+                                                    <li><span class="leaf-text">SMS transport for CEMAPI<span class="trans">（用于 CE 消息 API 的短信传输）</span></span></li>
+                                                    <li>
+                                                        <span class="label">SOAP Toolkit<span class="trans">（SOAP 开发包）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Client<span class="trans">（客户端）</span></span></li>
+                                                            <li><span class="leaf-text">Server<span class="trans">（服务器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Software Quality Metrics (SQM)<span class="trans">（软件质量指标）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Engine<span class="trans">（引擎）</span></span></li>
+                                                            <li><span class="leaf-text">Upload Client<span class="trans">（上传客户端）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">SQL Compact<span class="trans">（SQL 精简版，嵌入式数据库）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">SQL Compact</span></li>
+                                                            <li><span class="leaf-text">SQL Compact Managed Provider<span class="trans">（SQL Compact 托管提供程序）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">String Safe Utility Functions<span class="trans">（安全字符串实用函数）</span></span></li>
+                                                    <li>
+                                                        <span class="label">XML</span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">MSXML 3.0</span>
+                                                                <ul>
+                                                                    <li>
+                                                                        <span class="label">XML Core Services and Document Object Model (DOM)<span class="trans">（XML 核心服务与文档对象模型）</span></span>
+                                                                        <ul>
+                                                                            <li><span class="leaf-text">XML Error Strings<span class="trans">（XML 错误消息字符串）</span></span></li>
+                                                                            <li><span class="leaf-text">XML HTTP</span></li>
+                                                                            <li>
+                                                                                <span class="label">XML Query Languages (XQL)<span class="trans">（XML 查询语言）</span></span>
+                                                                                <ul>
+                                                                                    <li><span class="leaf-text">XML Stylesheet Language Transformations (XSLT)<span class="trans">（XML 样式表转换）</span></span></li>
+                                                                                </ul>
+                                                                            </li>
+                                                                            <li><span class="leaf-text">XML SAX<span class="trans">（XML 简单 API）</span></span></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><span class="leaf-text">XML Minimal Parser<span class="trans">（XML 最小解析器）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">XmlLite<span class="trans">（轻量级 XML 解析器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Communication Services and Networking<span class="trans">（通信服务与网络）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">Cellular<span class="trans">（蜂窝通信）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">CELLCORE<span class="trans">（蜂窝核心功能）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">All Modules<span class="trans">（所有模块）</span></span></li>
+                                                            <li><span class="leaf-text">Cellular TAPI Service Provider<span class="trans">（蜂窝电话 API 服务提供程序）</span></span></li>
+                                                            <li><span class="leaf-text">RIL Proxy<span class="trans">（无线接口层代理）</span></span></li>
+                                                            <li><span class="leaf-text">RIL Proxy Log<span class="trans">（RIL 代理日志）</span></span></li>
+                                                            <li><span class="leaf-text">SIM Manager<span class="trans">（SIM 卡管理器）</span></span></li>
+                                                            <li><span class="leaf-text">SMS<span class="trans">（短信服务）</span></span></li>
+                                                            <li><span class="leaf-text">WAP<span class="trans">（无线应用协议）</span></span></li>
+                                                            <li><span class="leaf-text">Wireless WAN<span class="trans">（无线广域网）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Connection Manager<span class="trans">（连接管理器）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Connection Manager All Modules<span class="trans">（连接管理器所有模块）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">MTP Responder<span class="trans">（媒体传输协议响应程序）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">MTP Responder (default)<span class="trans">（默认 MTP 响应程序）</span></span></li>
+                                                    <li><span class="leaf-text">MTP Responder (minimal)<span class="trans">（最小 MTP 响应程序）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Transports<span class="trans">（传输层）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">MTP IP Transport<span class="trans">（MTP IP 传输）</span></span></li>
+                                                            <li><span class="leaf-text">MTP USB Transport<span class="trans">（MTP USB 传输）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Networking - General<span class="trans">（网络 - 常规）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Domain Discovery<span class="trans">（域发现）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Extended DNS Querying and Update (DNSAPI)<span class="trans">（扩展 DNS 查询与更新）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Secure DNS<span class="trans">（安全 DNS）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Extensible Authentication Protocol<span class="trans">（可扩展身份验证协议，EAP）</span></span></li>
+                                                    <li><span class="leaf-text">Extensible Authentication Protocol Host<span class="trans">（EAP 主机）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Internet Connection Sharing (ICS)<span class="trans">（Internet 连接共享）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Gateway Logging<span class="trans">（网关日志记录）</span></span></li>
+                                                            <li><span class="leaf-text">NBT Gateway Routing Service<span class="trans">（NBT 网关路由服务）</span></span></li>
+                                                            <li><span class="leaf-text">Network Admin ISAPI extension base library<span class="trans">（网络管理 ISAPI 扩展基础库）</span></span></li>
+                                                            <li><span class="leaf-text">Service to automate starting processes at services.exe initialization<span class="trans">（services.exe 初始化时自动启动进程的服务）</span></span></li>
+                                                            <li><span class="leaf-text">Service to automate starting processes at services.exe initialization</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">IPsec v4</span></li>
+                                                    <li><span class="leaf-text">Link Layer Topology Discovery Responder<span class="trans">（链路层拓扑发现响应程序）</span></span></li>
+                                                    <li><span class="leaf-text">NDIS Packet Capturing DLL<span class="trans">（NDIS 数据包捕获动态库）</span></span></li>
+                                                    <li>
+                                                        <span class="label">NDIS User-mode I/O Protocol Driver<span class="trans">（NDIS 用户模式 I/O 协议驱动）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">NDIS user I/O utility<span class="trans">（NDIS 用户 I/O 实用工具）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Network Bridging<span class="trans">（网桥）</span></span></li>
+                                                    <li><span class="leaf-text">Network Driver Architecture (NDIS)<span class="trans">（网络驱动程序架构）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Network Utilities (IpConfig, Ping, Route)<span class="trans">（网络实用工具）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">IP configuration utility<span class="trans">（IP 配置工具）</span></span></li>
+                                                            <li><span class="leaf-text">Network statistics utility<span class="trans">（网络统计工具）</span></span></li>
+                                                            <li><span class="leaf-text">PING network diagnostic utility<span class="trans">（PING 网络诊断工具）</span></span></li>
+                                                            <li><span class="leaf-text">Sample app for setting up PPP connections<span class="trans">（用于建立 PPP 连接的示例程序）</span></span></li>
+                                                            <li><span class="leaf-text">Traceroute utility<span class="trans">（路由跟踪工具）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Reference Gateway User Interface<span class="trans">（参考网关用户界面）</span></span></li>
+                                                    <li><span class="leaf-text">Remote Configuration Framework<span class="trans">（远程配置框架）</span></span></li>
+                                                    <li>
+                                                        <span class="label">TCP/IP</span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">IP Helper API<span class="trans">（IP 助手 API）</span></span></li>
+                                                            <li><span class="leaf-text">TCP/IP Checksum<span class="trans">（TCP/IP 校验和，原文拼写有误，应为 Checksum）</span></span></li>
+                                                            <li><span class="leaf-text">TCP/IP Checksum</span></li>
+                                                            <li><span class="leaf-text">TCP/IP Checksum</span></li>
+                                                            <li><span class="leaf-text">TCP/IP Procotol<span class="trans">（TCP/IP 协议，原文拼写有误，应为 Protocol）</span></span></li>
+                                                            <li><span class="leaf-text">TCP/IP Procotol</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Universal Plug and Play (UPnP)<span class="trans">（通用即插即用）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Control Point API<span class="trans">（控制点 API）</span></span></li>
+                                                            <li><span class="leaf-text">Device Host API<span class="trans">（设备主机 API）</span></span></li>
+                                                            <li><span class="leaf-text">Device Host API (Minimal Subset)<span class="trans">（设备主机 API，最小子集）</span></span></li>
+                                                            <li>
+                                                                <span class="label">Sample UPnP ICD Schema Implementation<span class="trans">（示例 UPnP ICD 架构实现）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">UPnP Internet Gateway Device<span class="trans">（UPnP 互联网网关设备）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">UPnP Audio-Video (AV) Device Control Protocol<span class="trans">（UPnP 音视频设备控制协议）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">AV Control Point API<span class="trans">（AV 控制点 API）</span></span></li>
+                                                                    <li><span class="leaf-text">AV Device API<span class="trans">（AV 设备 API）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">UPnP Tools<span class="trans">（UPnP 工具）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Web Services on Devices (WSD)<span class="trans">（设备上的 Web 服务）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Web Services on Devices</span></li>
+                                                            <li><span class="leaf-text">Web Services on Devices Samples<span class="trans">（WSD 示例）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Windows Filter Platform<span class="trans">（Windows 筛选平台）</span></span></li>
+                                                    <li><span class="leaf-text">Windows Networking API/Redirector (SMB/CIFS)<span class="trans">（Windows 网络 API/重定向器，支持 SMB/CIFS 协议）</span></span></li>
+                                                    <li><span class="leaf-text">Winsock Support<span class="trans">（Winsock 支持）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Networking - Local Area Network (LAN)<span class="trans">（网络 - 局域网）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Wired Local Area Network (802.3, 802.5)<span class="trans">（有线局域网，802.3/802.5）</span></span></li>
+                                                    <li><span class="leaf-text">Wireless LAN (802.11) STA - Automatic Configuration and 802.1x<span class="trans">（无线局域网 802.11 STA - 自动配置与 802.1x）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Networking - Personal Area Network (PAN)<span class="trans">（网络 - 个人区域网）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Bluetooth<span class="trans">（蓝牙）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">Basic Package<span class="trans">（基础包）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Bluetooth Profile Management APIs<span class="trans">（蓝牙配置文件管理 API）</span></span></li>
+                                                                    <li><span class="leaf-text">Bluetooth Stack with Universal Loadable Driver<span class="trans">（带通用可加载驱动的蓝牙协议栈）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">General Embedded Package<span class="trans">（通用嵌入式包）</span></span>
+                                                                <ul>
+                                                                    <li>
+                                                                        <span class="label">Bluetooth HID Device Support<span class="trans">（蓝牙 HID 设备支持）</span></span>
+                                                                        <ul>
+                                                                            <li><span class="leaf-text">Bluetooth HID - Keyboard<span class="trans">（蓝牙 HID 键盘）</span></span></li>
+                                                                            <li><span class="leaf-text">Bluetooth HID - Mouse<span class="trans">（蓝牙 HID 鼠标）</span></span></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                    <li><span class="leaf-text">Bluetooth HS/HF and Audio Gateway Service<span class="trans">（蓝牙耳机/免提及音频网关服务）</span></span></li>
+                                                                    <li><span class="leaf-text">Bluetooth PAN<span class="trans">（蓝牙个人区域网）</span></span></li>
+                                                                    <li><span class="leaf-text">Bluetooth Settings UI<span class="trans">（蓝牙设置界面）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Networking - Wide Area Network (WAN)<span class="trans">（网络 - 广域网）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Dial Up Networking (RAS/PPP)<span class="trans">（拨号网络，远程访问服务/点对点协议）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">AutoDial<span class="trans">（自动拨号）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">RAS auto dialer<span class="trans">（RAS 自动拨号程序）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">Network and Dial-up Connections<span class="trans">（网络和拨号连接）</span></span></li>
+                                                            <li><span class="leaf-text">Standard Modem Support for Dial Up Networking<span class="trans">（拨号网络标准调制解调器支持）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Point-to-Point Protocol over Ethernet (PPPoE)<span class="trans">（以太网点对点协议）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Telephony API (TAPI 2.0)<span class="trans">（电话 API）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">TAPI Service Provider - Generic Modem Support<span class="trans">（TAPI 服务提供程序 - 通用调制解调器支持）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Virtual Private Networking<span class="trans">（虚拟专用网络，VPN）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">L2TP/IPSec</span></li>
+                                                            <li><span class="leaf-text">PPTP</span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Servers<span class="trans">（服务器）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Core Server Support<span class="trans">（核心服务器支持）</span></span></li>
+                                                    <li>
+                                                        <span class="label">DHCP Server<span class="trans">（DHCP 服务器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">DHCP Server Service<span class="trans">（DHCP 服务器服务）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">File Server<span class="trans">（文件服务器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">File Server (SMB/CIFS)<span class="trans">（文件服务器，SMB/CIFS 协议）</span></span></li>
+                                                            <li><span class="leaf-text">File Server Customizable Web UI<span class="trans">（文件服务器可自定义 Web 界面）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">FTP Server<span class="trans">（FTP 服务器）</span></span></li>
+                                                    <li><span class="leaf-text">Print Server (SMB/CIFS)<span class="trans">（打印服务器，SMB/CIFS）</span></span></li>
+                                                    <li><span class="leaf-text">RAS Server/PPTP Server (Incoming)<span class="trans">（RAS 服务器/PPTP 服务器，传入）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Simple Network Time Protocol (SNTP)<span class="trans">（简单网络时间协议）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Automatic DST Adjustmant Service<span class="trans">（自动夏令时调整服务，原文拼写有误，应为 Adjustment）</span></span></li>
+                                                            <li><span class="leaf-text">SNTP Client Service<span class="trans">（SNTP 客户端服务）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Telnet Server<span class="trans">（Telnet 服务器）</span></span></li>
+                                                    <li><span class="leaf-text">Web Proxy<span class="trans">（Web 代理）</span></span></li>
+                                                    <li><span class="leaf-text">Web Server (HTTP)<span class="trans">（Web 服务器，HTTP）</span></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Core OS Services<span class="trans">（核心操作系统服务）</span></span>
+                                        <ul>
+                                            <li><span class="leaf-text">Battery Driver<span class="trans">（电池驱动）</span></span></li>
+                                            <li>
+                                                <span class="label">Debugging Tools<span class="trans">（调试工具）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Keyboard Test Application<span class="trans">（键盘测试应用）</span></span></li>
+                                                    <li><span class="leaf-text">Remote Display Application<span class="trans">（远程显示应用）</span></span></li>
+                                                    <li><span class="leaf-text">Tiny Kernel Test Sample Application<span class="trans">（微内核测试示例应用）</span></span></li>
+                                                    <li><span class="leaf-text">Toolhelp API<span class="trans">（工具帮助 API）</span></span></li>
+                                                    <li><span class="leaf-text">Touch Driver Test Application<span class="trans">（触摸驱动测试应用）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Device Manager<span class="trans">（设备管理器）</span></span></li>
+                                            <li><span class="leaf-text">Display Support<span class="trans">（显示支持）</span></span></li>
+                                            <li><span class="leaf-text">Internet Appliance (IABASE) Support<span class="trans">（互联网设备支持，IABASE）</span></span></li>
+                                            <li>
+                                                <span class="label">Kernel Functionality<span class="trans">（内核功能）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Fiber API<span class="trans">（纤程 API）</span></span></li>
+                                                    <li><span class="leaf-text">FormatMessage API<span class="trans">（格式化消息 API）</span></span></li>
+                                                    <li><span class="leaf-text">Memory Mapped Files<span class="trans">（内存映射文件）</span></span></li>
+                                                    <li><span class="leaf-text">Message Queue - Point-to-Point<span class="trans">（点对点消息队列）</span></span></li>
+                                                    <li><span class="leaf-text">Target Control Support (Shell.exe)<span class="trans">（目标控制支持）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">NLED Service<span class="trans">（通知 LED 服务）</span></span></li>
+                                            <li>
+                                                <span class="label">Notification (Choose 1)<span class="trans">（通知，选择一项）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Non UI based Notification<span class="trans">（非界面通知）</span></span></li>
+                                                    <li><span class="leaf-text">UI based Notification<span class="trans">（界面通知）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Notification LED Support<span class="trans">（通知 LED 支持）</span></span></li>
+                                            <li><span class="leaf-text">Parallel Port Support<span class="trans">（并口支持）</span></span></li>
+                                            <li>
+                                                <span class="label">Power Management (Choose 1)<span class="trans">（电源管理，选择一项）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Power Management (Full)<span class="trans">（完整电源管理）</span></span></li>
+                                                    <li><span class="leaf-text">Power Management (Minimal)<span class="trans">（最小电源管理）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Serial Port Support<span class="trans">（串口支持）</span></span></li>
+                                            <li>
+                                                <span class="label">Time Zone and DST Service<span class="trans">（时区与夏令时服务）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Automatic DST Adjustment Service<span class="trans">（自动夏令时调整服务）</span></span></li>
+                                                    <li><span class="leaf-text">Time Zone Support<span class="trans">（时区支持）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">UI Proxy for Kernel-Mode Drivers<span class="trans">（内核模式驱动的界面代理）</span></span></li>
+                                            <li><span class="leaf-text">Windows Embedded Compact Driver Development Kit Support Library<span class="trans">（Windows Embedded Compact 驱动开发套件支持库）</span></span></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Device Drivers<span class="trans">（设备驱动程序）</span></span>
+                                        <ul>
+                                            <li><span class="leaf-text">Accelerometer Driver<span class="trans">（加速度计驱动）</span></span></li>
+                                            <li>
+                                                <span class="label">Audio<span class="trans">（音频）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Esouniq<span class="trans">（Esouniq 音频驱动）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Esouniq ES1371</span></li>
+                                                            <li><span class="leaf-text">Wavev2 Esouniq</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Wavev2 Virtual<span class="trans">（Wavev2 虚拟音频驱动）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Backlight<span class="trans">（背光）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Backlight Driver<span class="trans">（背光驱动）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Bus Drivers<span class="trans">（总线驱动）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">I2C Bus<span class="trans">（I²C 总线）</span></span></li>
+                                                    <li><span class="leaf-text">PCI Bus<span class="trans">（PCI 总线）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Camera<span class="trans">（摄像头）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">NULL Camera Driver<span class="trans">（空摄像头驱动）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Display<span class="trans">（显示）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">ATI Rage XL Expert 98</span></li>
+                                                    <li><span class="leaf-text">Multiple-Monitor Support<span class="trans">（多显示器支持）</span></span></li>
+                                                    <li><span class="leaf-text">NULL (Stub)<span class="trans">（空驱动/存根）</span></span></li>
+                                                    <li><span class="leaf-text">VGA Linear (Flat) Framebuffer<span class="trans">（VGA 线性帧缓冲）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Input Devices<span class="trans">（输入设备）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Keyboard/Mouse<span class="trans">（键盘/鼠标）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">8042 PS/2 Keyboard/Mouse<span class="trans">（8042 PS/2 键盘/鼠标）</span></span></li>
+                                                            <li><span class="leaf-text">Layout Manager<span class="trans">（键盘布局管理器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Networking<span class="trans">（网络）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Local Area Networking (LAN) devices<span class="trans">（局域网设备）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">AR6002 Native 802.11 Miniport Driver<span class="trans">（AR6002 原生 802.11 微型端口驱动）</span></span></li>
+                                                            <li><span class="leaf-text">E1000ex (PCI card)<span class="trans">（E1000ex PCI 网卡）</span></span></li>
+                                                            <li><span class="leaf-text">NE2000-compatible (ISA card)<span class="trans">（NE2000 兼容 ISA 网卡）</span></span></li>
+                                                            <li><span class="leaf-text">NE2000-compatible (PCI card)<span class="trans">（NE2000 兼容 PCI 网卡）</span></span></li>
+                                                            <li><span class="leaf-text">RealTek 8185 Native WiFi<span class="trans">（RealTek 8185 原生 WiFi）</span></span></li>
+                                                            <li><span class="leaf-text">RealTek RTL8139</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Wide Area Networking (WAN) devices<span class="trans">（广域网设备）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Asyncmac NDIS Driver<span class="trans">（异步 MAC NDIS 驱动）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">SD<span class="trans">（安全数字存储卡）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">SD Bus Driver<span class="trans">（SD 总线驱动）</span></span></li>
+                                                    <li>
+                                                        <span class="label">SD Clients<span class="trans">（SD 客户端）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">SD Memory<span class="trans">（SD 存储）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">SD Host<span class="trans">（SD 主机）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">SD Standard Host Controller<span class="trans">（SD 标准主机控制器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Serial<span class="trans">（串口）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Com16550</span></li>
+                                                    <li><span class="leaf-text">Com16550 (Second Instance)<span class="trans">（Com16550 第二实例）</span></span></li>
+                                                    <li><span class="leaf-text">Com16550 (Third Instance)<span class="trans">（Com16550 第三实例）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Smart Card<span class="trans">（智能卡）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Bull Systems SmartTLP3 - Serial Smart Card Reader<span class="trans">（Bull SmartTLP3 串口智能卡读卡器）</span></span></li>
+                                                    <li><span class="leaf-text">SCM Microsystems SCR300 - USB Smart Card Reader<span class="trans">（SCM SCR300 USB 智能卡读卡器）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Storage Devices<span class="trans">（存储设备）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">ATAPI PCI Support<span class="trans">（ATAPI PCI 支持）</span></span></li>
+                                                    <li>
+                                                        <span class="label">MSFlash Drivers<span class="trans">（MSFlash 驱动）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Flash MDD<span class="trans">（闪存模型设备驱动）</span></span></li>
+                                                            <li><span class="leaf-text">Intel StrataFlash NOR Driver<span class="trans">（Intel StrataFlash NOR 闪存驱动）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">USB</span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">USB Function<span class="trans">（USB 设备模式）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">USB Function Bus Drivers<span class="trans">（USB 功能总线驱动）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Netchip NET2280 USB Function Controller<span class="trans">（Netchip NET2280 USB 功能控制器）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">USB Function Clients<span class="trans">（USB 功能客户端）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Composite Function Driver<span class="trans">（复合功能驱动）</span></span></li>
+                                                                    <li><span class="leaf-text">USBFN Mass Storage Client<span class="trans">（USBFN 大容量存储客户端）</span></span></li>
+                                                                    <li><span class="leaf-text">USBFN RNDIS Client<span class="trans">（USBFN 远程 NDIS 客户端）</span></span></li>
+                                                                    <li><span class="leaf-text">USBFN Serial Client<span class="trans">（USBFN 串行客户端）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">USB Function Support<span class="trans">（USB 功能支持）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">USB Host<span class="trans">（USB 主机）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">USB Class Drivers<span class="trans">（USB 类驱动）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">USB Audio Class Driver<span class="trans">（USB 音频类驱动）</span></span></li>
+                                                                    <li><span class="leaf-text">USB Human Input Device (HID) Class<span class="trans">（USB HID 类驱动）</span></span></li>
+                                                                    <li><span class="leaf-text">USB Printer Class Driver<span class="trans">（USB 打印机类驱动）</span></span></li>
+                                                                    <li><span class="leaf-text">USB RNDIS Class Driver<span class="trans">（USB RNDIS 类驱动）</span></span></li>
+                                                                    <li><span class="leaf-text">USB Storage Class Driver<span class="trans">（USB 存储类驱动）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">USB Host Controllers<span class="trans">（USB 主机控制器）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">EHCI<span class="trans">（增强型主机控制器接口）</span></span></li>
+                                                                    <li><span class="leaf-text">OHCI<span class="trans">（开放主机控制器接口）</span></span></li>
+                                                                    <li><span class="leaf-text">UHCI<span class="trans">（通用主机控制器接口）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">USB Host Support<span class="trans">（USB 主机支持）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Device Management<span class="trans">（设备管理）</span></span>
+                                        <ul>
+                                            <li><span class="leaf-text">Simple Network Management Protocol (SNMP)<span class="trans">（简单网络管理协议）</span></span></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">File Systems and Data Store<span class="trans">（文件系统与数据存储）</span></span>
+                                        <ul>
+                                            <li><span class="leaf-text">Compression<span class="trans">（压缩）</span></span></li>
+                                            <li>
+                                                <span class="label">Database Support<span class="trans">（数据库支持）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">CEDB Database Engine<span class="trans">（CEDB 数据库引擎）</span></span></li>
+                                                    <li><span class="leaf-text">EDB Database Engine<span class="trans">（EDB 数据库引擎）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">File and Database Replication<span class="trans">（文件与数据库复制）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Bit-based<span class="trans">（基于位）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">File Cache Manager<span class="trans">（文件缓存管理器）</span></span></li>
+                                            <li>
+                                                <span class="label">File System - Internal (Choose 1)<span class="trans">（内部文件系统，选择一项）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">RAM and ROM File System<span class="trans">（RAM 和 ROM 文件系统）</span></span></li>
+                                                    <li><span class="leaf-text">ROM-only File System<span class="trans">（仅 ROM 文件系统）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Registry Storage (Choose 1)<span class="trans">（注册表存储，选择一项）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Hive-based Registry<span class="trans">（基于 Hive 的注册表）</span></span></li>
+                                                    <li><span class="leaf-text">RAM-based Registry<span class="trans">（基于 RAM 的注册表）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Storage Manager<span class="trans">（存储管理器）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Binary Rom Image File System<span class="trans">（二进制 ROM 映像文件系统）</span></span></li>
+                                                    <li><span class="leaf-text">CD/UDFS File System<span class="trans">（CD/UDFS 文件系统）</span></span></li>
+                                                    <li><span class="leaf-text">exFAT File System<span class="trans">（exFAT 文件系统）</span></span></li>
+                                                    <li><span class="leaf-text">FAT File System<span class="trans">（FAT 文件系统）</span></span></li>
+                                                    <li><span class="leaf-text">Landscape Storage Properties<span class="trans">（横向存储属性）</span></span></li>
+                                                    <li><span class="leaf-text">Partition Driver<span class="trans">（分区驱动）</span></span></li>
+                                                    <li><span class="leaf-text">Portrait Storage Properties<span class="trans">（纵向存储属性）</span></span></li>
+                                                    <li><span class="leaf-text">Release Directory File System<span class="trans">（发布目录文件系统）</span></span></li>
+                                                    <li><span class="leaf-text">Silent FAT File System UI<span class="trans">（静默 FAT 文件系统界面）</span></span></li>
+                                                    <li><span class="leaf-text">Storage Manager Control Panel Applet<span class="trans">（存储管理器控制面板小程序）</span></span></li>
+                                                    <li><span class="leaf-text">Transaction-Safe FAT File System (TFAT)<span class="trans">（事务安全 FAT 文件系统）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">System Password<span class="trans">（系统密码）</span></span></li>
+                                        </ul>
+                                    </li>
+
+                                    <li><span class="leaf-text">Fonts<span class="trans">（字体）</span></span></li>
+
+                                    <li>
+                                        <span class="label">Graphics and Multimedia Technologies<span class="trans">（图形与多媒体技术）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">Audio<span class="trans">（音频）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Audio Compression Manager<span class="trans">（音频压缩管理器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">ACM user interface replaceable functions<span class="trans">（ACM 可替换界面函数）</span></span></li>
+                                                            <li><span class="leaf-text">GSM 6.10 Codec<span class="trans">（GSM 6.10 编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">MSFilter Codec<span class="trans">（MSFilter 编解码器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Waveform Audio<span class="trans">（波形音频）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Graphics<span class="trans">（图形）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Alphablend API (GDI version)<span class="trans">（透明混合 API，GDI 版本）</span></span></li>
+                                                    <li><span class="leaf-text">DirectDraw</span></li>
+                                                    <li><span class="leaf-text">Gradient Fill Support<span class="trans">（渐变填充支持）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Imaging<span class="trans">（图像处理）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Still Image Codec Support (Encode and Decode)<span class="trans">（静态图像编解码支持，含编码与解码）</span></span></li>
+                                                            <li>
+                                                                <span class="label">Still Image Decoders<span class="trans">（静态图像解码器）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">BMP Decoder<span class="trans">（BMP 解码器）</span></span></li>
+                                                                    <li><span class="leaf-text">GIF Decoder<span class="trans">（GIF 解码器）</span></span></li>
+                                                                    <li><span class="leaf-text">ICO Decoder<span class="trans">（ICO 解码器）</span></span></li>
+                                                                    <li><span class="leaf-text">JPG Decoder<span class="trans">（JPG 解码器）</span></span></li>
+                                                                    <li><span class="leaf-text">PNG Decoder<span class="trans">（PNG 解码器）</span></span></li>
+                                                                    <li><span class="leaf-text">TIFF Decoder<span class="trans">（TIFF 解码器）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">Still Image Encoders<span class="trans">（静态图像编码器）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">BMP Encoder<span class="trans">（BMP 编码器）</span></span></li>
+                                                                    <li><span class="leaf-text">GIF Encoder<span class="trans">（GIF 编码器）</span></span></li>
+                                                                    <li><span class="leaf-text">JPG Encoder<span class="trans">（JPG 编码器）</span></span></li>
+                                                                    <li><span class="leaf-text">PNG Encoder<span class="trans">（PNG 编码器）</span></span></li>
+                                                                    <li><span class="leaf-text">TIFF Encoder<span class="trans">（TIFF 编码器）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Multiple Monitor Support<span class="trans">（多显示器支持）</span></span></li>
+                                                    <li><span class="leaf-text">Raster Fonts Support<span class="trans">（光栅字体支持）</span></span></li>
+                                                    <li><span class="leaf-text">V1 Font Compatibility<span class="trans">（V1 字体兼容）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Windows Codecs<span class="trans">（Windows 编解码器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Windows Codecs</span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Media<span class="trans">（媒体）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Audio Codecs and Renderers<span class="trans">（音频编解码器与渲染器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">G.711 Audio Codec<span class="trans">（G.711 音频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">GSM 6.10 Audio Codec<span class="trans">（GSM 6.10 音频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">IMA ADPCM Audio Codec<span class="trans">（IMA ADPCM 音频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">MP3 Codec<span class="trans">（MP3 编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">MPEG-1 Layer 1 and 2 Audio Codec<span class="trans">（MPEG-1 层1/2 音频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">MS ADPCM Audio Codec<span class="trans">（MS ADPCM 音频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">Wave/AIFF/au/snd File Parser<span class="trans">（Wave/AIFF/au/snd 文件解析器）</span></span></li>
+                                                            <li><span class="leaf-text">Waveform Audio Renderer<span class="trans">（波形音频渲染器）</span></span></li>
+                                                            <li><span class="leaf-text">WMA Codec<span class="trans">（WMA 编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">WMA Voice Codec<span class="trans">（WMA 语音编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">WMAPro over S/PDIF Packetizer<span class="trans">（WMAPro S/PDIF 分组器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Digital Rights Management<span class="trans">（数字版权管理）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">DRM License Acquisition OCX<span class="trans">（DRM 许可证获取 OCX 控件）</span></span></li>
+                                                            <li><span class="leaf-text">Windows Media DRM 10 PD<span class="trans">（Windows Media DRM 10 便携设备版）</span></span></li>
+                                                            <li>
+                                                                <span class="label">WMDRM 10 for Networked Devices<span class="trans">（WMDRM 10 网络设备版）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Windows Media DRM 10 ND</span></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">DirectShow</span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">ACM Wrapper Filter<span class="trans">（ACM 包装过滤器）</span></span></li>
+                                                            <li><span class="leaf-text">DirectShow Core<span class="trans">（DirectShow 核心）</span></span></li>
+                                                            <li><span class="leaf-text">DirectShow Display<span class="trans">（DirectShow 显示）</span></span></li>
+                                                            <li><span class="leaf-text">DirectShow Error Messages<span class="trans">（DirectShow 错误消息）</span></span></li>
+                                                            <li><span class="leaf-text">DirectShow MIDI Parser Filter<span class="trans">（DirectShow MIDI 解析过滤器）</span></span></li>
+                                                            <li><span class="leaf-text">DirectShow MIDI Synthesizer Filter<span class="trans">（DirectShow MIDI 合成器过滤器）</span></span></li>
+                                                            <li><span class="leaf-text">DirectShow Video Capture<span class="trans">（DirectShow 视频捕获）</span></span></li>
+                                                            <li><span class="leaf-text">DMO Wrapper Filter<span class="trans">（DMO 包装过滤器）</span></span></li>
+                                                            <li><span class="leaf-text">HTTP Streamer Filter<span class="trans">（HTTP 流过滤器）</span></span></li>
+                                                            <li><span class="leaf-text">Local File Streamer<span class="trans">（本地文件流）</span></span></li>
+                                                            <li><span class="leaf-text">Still Image Decoder Filter<span class="trans">（静态图像解码过滤器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Media Formats<span class="trans">（媒体格式）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">AVI Filter<span class="trans">（AVI 过滤器）</span></span></li>
+                                                            <li><span class="leaf-text">MPEG-1 Parser/Splitter<span class="trans">（MPEG-1 解析/分离器）</span></span></li>
+                                                            <li><span class="leaf-text">MPEG-2 Demultiplexer<span class="trans">（MPEG-2 解复用器）</span></span></li>
+                                                            <li><span class="leaf-text">MPEG-4 Demultiplexer<span class="trans">（MPEG-4 解复用器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Media Library<span class="trans">（媒体库）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Media Library</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Media Renderer<span class="trans">（媒体渲染器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Media Renderer</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Streaming Media Playback<span class="trans">（流媒体播放）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Video Codecs and Renderers<span class="trans">（视频编解码器与渲染器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">DirectShow Video Mixing Renderer<span class="trans">（DirectShow 视频混合渲染器）</span></span></li>
+                                                            <li><span class="leaf-text">MPEG-1 Video Codec<span class="trans">（MPEG-1 视频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">MS RLE Video Codec<span class="trans">（MS RLE 视频编解码器）</span></span></li>
+                                                            <li><span class="leaf-text">Video/Image Compression Manager<span class="trans">（视频/图像压缩管理器）</span></span></li>
+                                                            <li><span class="leaf-text">WM ASF Reader Filter<span class="trans">（WM ASF 读取过滤器）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Windows Media Player<span class="trans">（Windows 媒体播放器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Sample Media Content<span class="trans">（示例媒体内容）</span></span></li>
+                                                            <li>
+                                                                <span class="label">Windows Media Player Applications<span class="trans">（Windows 媒体播放器应用）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Windows Music Player<span class="trans">（Windows 音乐播放器）</span></span></li>
+                                                                    <li><span class="leaf-text">Windows Photo Viewer<span class="trans">（Windows 照片查看器）</span></span></li>
+                                                                    <li><span class="leaf-text">Windows Video Player<span class="trans">（Windows 视频播放器）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">Windows Media Player OCX<span class="trans">（Windows 媒体播放器 OCX 控件）</span></span></li>
+                                                            <li><span class="leaf-text">Windows Media Player OCX v7.0</span></li>
+                                                            <li><span class="leaf-text">Windows Media Technologies<span class="trans">（Windows 媒体技术）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">WMA and MP3 Local Playback<span class="trans">（WMA 和 MP3 本地播放）</span></span></li>
+                                                    <li><span class="leaf-text">WMA and MP3 Streaming<span class="trans">（WMA 和 MP3 流播放）</span></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li><span class="leaf-text">International<span class="trans">（国际化）</span></span></li>
+
+                                    <li>
+                                        <span class="label">Internet Client Services<span class="trans">（Internet 客户端服务）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">Browser Application<span class="trans">（浏览器应用程序）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Flash10.1</span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Adobe Flash Player 10.1 ActiveX Control<span class="trans">（Adobe Flash Player 10.1 ActiveX 控件）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Internet Explorer 7.0 for Windows Embedded Compact - Standard Components<span class="trans">（适用于 Windows Embedded Compact 的 IE7 标准组件）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Internet Explorer 7.0 Sample Browser<span class="trans">（IE7 示例浏览器）</span></span></li>
+                                                            <li><span class="leaf-text">Internet Explorer 7.0 Silverlight for Windows Embedded<span class="trans">（IE7 中的 Silverlight for Windows Embedded）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Internet Explorer 7.0 for Windows Embedded Compact Components<span class="trans">（IE7 组件）</span></span>
+                                                <ul>
+                                                    <li>
+                                                        <span class="label">Internet Explorer HTML/DHTML API</span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">Filter and Transition<span class="trans">（筛选器和过渡）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">MSFT DirectX Transforms<span class="trans">（微软 DirectX 变换）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">Internet Explorer Plug-in Image Decoder API<span class="trans">（IE 插件图像解码器 API）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Internet Explorer PNG Image Decoder<span class="trans">（IE PNG 图像解码器）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li>
+                                                                <span class="label">Internet Explorer Theme Library<span class="trans">（IE 主题库）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">Internet Explorer Theme Library - Windows XP style<span class="trans">（IE 主题库 - Windows XP 风格）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Internet Explorer Multiple-Language Base API<span class="trans">（IE 多语言基础 API）</span></span></li>
+                                                    <li><span class="leaf-text">Internet Explorer RPC Support<span class="trans">（IE RPC 支持）</span></span></li>
+                                                    <li><span class="leaf-text">URL Moniker Services<span class="trans">（URL Moniker 服务）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Windows Internet Services<span class="trans">（Windows Internet 服务）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Passport SSI 1.4 Authentication<span class="trans">（Passport SSI 1.4 身份验证）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">XML Data Islands<span class="trans">（XML 数据岛）</span></span></li>
+                                                    <li><span class="leaf-text">XML MIME Viewer<span class="trans">（XML MIME 查看器）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Internet Options Control Panel<span class="trans">（Internet 选项控制面板）</span></span></li>
+                                            <li><span class="leaf-text">Internet Options Control Panel Silverlight for Windows Embedded<span class="trans">（Silverlight 版 Internet 选项控制面板）</span></span></li>
+                                            <li>
+                                                <span class="label">Scripting<span class="trans">（脚本）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">JScript 5.8</span></li>
+                                                    <li><span class="leaf-text">VBScript 5.8</span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Security<span class="trans">（安全）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">Authentication Services (SSPI)<span class="trans">（身份验证服务）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Kerberos</span></li>
+                                                    <li><span class="leaf-text">NTLM</span></li>
+                                                    <li><span class="leaf-text">Schannel (SSL/TLS)<span class="trans">（安全通道，SSL/TLS）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Credential Manager<span class="trans">（凭据管理器）</span></span></li>
+                                            <li>
+                                                <span class="label">Cryptography API: Next Generation (CNG) Primitives<span class="trans">（下一代加密 API 原语）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Cryptography API: Next Generation (CNG) Key Storage and Retrieval<span class="trans">（CNG 密钥存储与检索）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Cryptography Services (CryptoAPI 1.0) with High Encryption Provider<span class="trans">（加密服务，含高加密提供程序）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Certificates (CryptoAPI 2.0)<span class="trans">（证书）</span></span></li>
+                                                    <li><span class="leaf-text">Diffie-Hellman/DSS Provider<span class="trans">（Diffie-Hellman/DSS 提供程序）</span></span></li>
+                                                </ul>
+                                            </li>
+                                            <li><span class="leaf-text">Loader Verifier Module<span class="trans">（加载器验证模块）</span></span></li>
+                                            <li>
+                                                <span class="label">Local Authentication Sub-System<span class="trans">（本地身份验证子系统）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Password Local Authentication Plug-in<span class="trans">（密码本地身份验证插件）</span></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Shell and User Interface<span class="trans">（Shell 与用户界面）</span></span>
+                                        <ul>
+                                            <li>
+                                                <span class="label">Graphics, Windowing and Events<span class="trans">（图形、窗口与事件）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Default Gesture Response<span class="trans">（默认手势响应）</span></span></li>
+                                                    <li><span class="leaf-text">Gesture Physics Engine<span class="trans">（手势物理引擎）</span></span></li>
+                                                    <li><span class="leaf-text">Minimal GDI Configuration<span class="trans">（最小 GDI 配置）</span></span></li>
+                                                    <li><span class="leaf-text">Minimal GWES Configuration<span class="trans">（最小图形窗口事件系统配置）</span></span></li>
+                                                    <li><span class="leaf-text">Minimal Input Configuration<span class="trans">（最小输入配置）</span></span></li>
+                                                    <li><span class="leaf-text">Minimal Window Manager Configuration<span class="trans">（最小窗口管理器配置）</span></span></li>
+                                                    <li><span class="leaf-text">Touch Gesture GWES Component<span class="trans">（触摸手势 GWES 组件）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Window Compositor<span class="trans">（窗口合成器）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Window Compositor</span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Shell<span class="trans">（Shell）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">AYGShell API Set<span class="trans">（AYGShell API 集，Windows CE 专用 Shell API）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Command Shell<span class="trans">（命令 Shell）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Command Processor<span class="trans">（命令处理器）</span></span></li>
+                                                            <li><span class="leaf-text">Console Window<span class="trans">（控制台窗口）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Graphical Shell (Choose 1)<span class="trans">（图形 Shell，选择一项）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">Sample Home Screen Silverlight for Windows Embedded<span class="trans">（示例 Silverlight 主屏幕）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">$(_WINCEROOT)\PUBLIC\SHELL\OAK\XRHSHELL<span class="trans">（示例主屏幕资源路径）</span></span></li>
+                                                                    <li><span class="leaf-text">Silverlight based Message Box<span class="trans">（基于 Silverlight 的消息框）</span></span></li>
+                                                                    <li>
+                                                                        <span class="label">Themes<span class="trans">（主题）</span></span>
+                                                                        <ul>
+                                                                            <li><span class="leaf-text">Default Theme<span class="trans">（默认主题）</span></span></li>
+                                                                            <li><span class="leaf-text">Theme 1<span class="trans">（主题1）</span></span></li>
+                                                                            <li><span class="leaf-text">Theme 2<span class="trans">（主题2）</span></span></li>
+                                                                            <li><span class="leaf-text">Theme 3<span class="trans">（主题3）</span></span></li>
+                                                                        </ul>
+                                                                    </li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">Standard Shell<span class="trans">（标准 Shell）</span></span></li>
+                                                            <li><span class="leaf-text">Windows Thin Client Shell<span class="trans">（Windows 瘦客户端 Shell）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Screen configuration (Choose 1)<span class="trans">（屏幕配置，选择一项）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">640 x 480 Portrait<span class="trans">（640x480 纵向）</span></span></li>
+                                                            <li><span class="leaf-text">800 x 480 Landscape<span class="trans">（800x480 横向）</span></span></li>
+                                                            <li><span class="leaf-text">1920 x 1080p Landscape<span class="trans">（1920x1080p 横向）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">Silverlight for Windows Embedded</span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Silverlight for Windows Embedded</span></li>
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <span class="label">User Interface<span class="trans">（用户界面）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Accessibility<span class="trans">（辅助功能）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Common Controls<span class="trans">（公共控件）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Animation Control<span class="trans">（动画控件）</span></span></li>
+                                                            <li><span class="leaf-text">Common Control<span class="trans">（公共控件）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Common Dialog Support<span class="trans">（公共对话框支持）</span></span></li>
+                                                    <li><span class="leaf-text">Control Panel Applets<span class="trans">（控制面板小程序）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Control Panel, Silverlight for Windows Embedded<span class="trans">（Silverlight 版控制面板）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">CtlPnL2.exe</span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <span class="label">Customizable UI<span class="trans">（可自定义用户界面）</span></span>
+                                                        <ul>
+                                                            <li><span class="leaf-text">Windows XP-like Sample Skin<span class="trans">（仿 Windows XP 示例皮肤）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Date Time Setting<span class="trans">（日期时间设置）</span></span></li>
+                                                    <li><span class="leaf-text">Display Setting<span class="trans">（显示设置）</span></span></li>
+                                                    <li><span class="leaf-text">Input Setting<span class="trans">（输入设置）</span></span></li>
+                                                    <li><span class="leaf-text">Menu Tool Tip<span class="trans">（菜单工具提示）</span></span></li>
+                                                    <li><span class="leaf-text">Mouse<span class="trans">（鼠标）</span></span></li>
+                                                    <li><span class="leaf-text">Network Connection Setting<span class="trans">（网络连接设置）</span></span></li>
+                                                    <li><span class="leaf-text">Network User Interface<span class="trans">（网络用户界面）</span></span></li>
+                                                    <li><span class="leaf-text">Overlapping Menus<span class="trans">（重叠菜单）</span></span></li>
+                                                    <li><span class="leaf-text">Quarter VGA Resources - Portrait Mode<span class="trans">（Quarter VGA 资源 - 纵向模式）</span></span></li>
+                                                    <li><span class="leaf-text">Regional Setting<span class="trans">（区域设置）</span></span></li>
+                                                    <li>
+                                                        <span class="label">Software Input Panel<span class="trans">（软件输入面板）</span></span>
+                                                        <ul>
+                                                            <li>
+                                                                <span class="label">Software-based Input Panel (SIP) (Choose 1 or more)<span class="trans">（基于软件的输入面板，选择一个或多个）</span></span>
+                                                                <ul>
+                                                                    <li><span class="leaf-text">SIP for Large Screens<span class="trans">（大屏幕 SIP）</span></span></li>
+                                                                    <li><span class="leaf-text">SIP for Small Screens<span class="trans">（小屏幕 SIP）</span></span></li>
+                                                                    <li><span class="leaf-text">SIP for Small Screens, Silverlight for Windows Embedded<span class="trans">（小屏幕 SIP，Silverlight 版）</span></span></li>
+                                                                </ul>
+                                                            </li>
+                                                            <li><span class="leaf-text">Software-based Input Panel driver<span class="trans">（软件输入面板驱动）</span></span></li>
+                                                        </ul>
+                                                    </li>
+                                                    <li><span class="leaf-text">Sound Setting<span class="trans">（声音设置）</span></span></li>
+                                                    <li><span class="leaf-text">Touch Screen (Stylus)<span class="trans">（触摸屏，手写笔）</span></span></li>
+                                                    <li><span class="leaf-text">Wi-Fi Setting<span class="trans">（Wi-Fi 设置）</span></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <span class="label">Windows Embedded Compact Error Reporting<span class="trans">（Windows Embedded Compact 错误报告）</span></span>
+                                        <ul>
+                                            <li><span class="leaf-text">Error Report Generator<span class="trans">（错误报告生成器）</span></span></li>
+                                            <li><span class="leaf-text">Error Report Transfer Driver<span class="trans">（错误报告传输驱动）</span></span></li>
+                                            <li><span class="leaf-text">Error Reporting Control Panel<span class="trans">（错误报告控制面板）</span></span></li>
+                                            <li>
+                                                <span class="label">Report Upload Client<span class="trans">（报告上传客户端）</span></span>
+                                                <ul>
+                                                    <li><span class="leaf-text">Report Upload Client User Interface<span class="trans">（报告上传客户端界面）</span></span></li>
+                                                </ul>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <p class="author">
+        <a href="https://space.bilibili.com/3546662595201297" target="_blank" rel="noopener noreferrer">
+            <span class="author-light">By SYSTEM-</span><b>SZ</b><b> · </b><span class="author-light">bilibili</span>
+        </a>
+    </p>
+
+</body>
+</html>

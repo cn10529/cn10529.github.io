@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows Embedded Compact 7 镜像制作详细教程</title>
+    <style>
+        body {
+            font-family: 宋体, SimSun, serif;
+            margin: 72pt 90pt;
+            word-wrap: break-word;
+            word-break: break-word;
+            line-height: 1.6;
+        }
+        h1 {
+            font-size: 36pt;
+            color: blue;
+            font-weight: bold;
+            font-family: 宋体, SimSun, serif;
+            margin: 0 0 18pt 0;
+        }
+        .index-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24pt;
+        }
+        .index-table td {
+            border: 1pt solid blue;
+            padding: 8pt 12pt;
+            vertical-align: top;
+        }
+        .index-title {
+            font-size: 20pt;
+            font-weight: bold;
+            color: blue;
+            font-family: 宋体, SimSun, serif;
+            margin-bottom: 8pt;
+        }
+        .index-item {
+            font-size: 12pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 57pt;
+            text-indent: -36pt;
+            font-family: 宋体, SimSun, serif;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .index-sub {
+            font-size: 11pt;
+            color: black;
+            margin-left: 81pt;
+            text-indent: -18pt;
+            font-family: 宋体, SimSun, serif;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        .sec1 {
+            font-size: 22pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 40.5pt;
+            text-indent: -40.5pt;
+            margin-top: 24pt;
+            margin-bottom: 12pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .sec2 {
+            font-size: 18pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 62.5pt;
+            text-indent: -22pt;
+            margin-top: 16pt;
+            margin-bottom: 8pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .sec2-sub {
+            font-size: 18pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 71.6pt;
+            text-indent: -22pt;
+            margin-top: 16pt;
+            margin-bottom: 8pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .step-title {
+            font-size: 14pt;
+            color: black;
+            font-weight: bold;
+            margin-left: 71.6pt;
+            text-indent: -22pt;
+            margin-top: 6pt;
+            margin-bottom: 4pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .step-content {
+            font-size: 14pt;
+            color: black;
+            margin-left: 71.6pt;
+            margin-bottom: 6pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .step-content-indent {
+            font-size: 14pt;
+            color: black;
+            margin-left: 93.6pt;
+            margin-bottom: 6pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .normal-text {
+            font-size: 14pt;
+            color: black;
+            margin-top: 6pt;
+            margin-bottom: 6pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .note-box {
+            border: 1pt solid windowtext;
+            padding: 1pt 4pt;
+            margin-left: 71.6pt;
+            margin-right: 0cm;
+            font-family: 宋体, SimSun, serif;
+            font-size: 14pt;
+            margin-bottom: 12pt;
+        }
+        .theme-table {
+            border-collapse: collapse;
+            border: none;
+            margin-left: 71.6pt;
+            background: white;
+            width: auto;
+            margin-bottom: 12pt;
+        }
+        .theme-table td {
+            border: 1pt solid windowtext;
+            padding: 0cm 5.4pt;
+            text-align: center;
+            vertical-align: top;
+        }
+        .final-text {
+            font-size: 22pt;
+            color: gray;
+            text-align: center;
+            font-family: 宋体, SimSun, serif;
+            margin: 24pt 0 8pt 0;
+        }
+        .sub-final {
+            font-size: 16pt;
+            color: #BFBFBF;
+            text-align: center;
+            font-family: 宋体, SimSun, serif;
+            margin-bottom: 24pt;
+        }
+        .author {
+            font-size: 24pt;
+            color: #7F7F7F;
+            text-align: center;
+            font-family: "微软雅黑", sans-serif;
+            margin-top: 0;
+        }
+        .author-light {
+            font-family: "微软雅黑 Light", sans-serif;
+            font-weight: normal;
+        }
+        .author a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .author a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: inline-block;
+            vertical-align: middle;
+            margin: 4pt 2pt;
+        }
+        .img-block {
+            display: block;
+            margin: 8pt 0;
+        }
+        .red {
+            color: red;
+            font-weight: bold;
+        }
+        .gray {
+            color: #A6A6A6;
+        }
+        .blue-bold {
+            color: blue;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Windows Embedded Compact 7 镜像制作详细教程</h1>
+
+<p class="normal-text" style="margin-left:0; font-size:14pt;">之前，我们已经安装了所有Windows Embedded Compact 7所必须的开发环境，这个教程将会包含配置WEC7项目、定制镜像、生成不同版本镜像、设置和汉化中文、虚拟机镜像体验等等，我们来看看吧！</p>
+
+<!-- 索引 -->
+<table class="index-table">
+    <tr>
+        <td>
+            <div class="index-title">索引</div>
+            <div class="index-item">一、 准备</div>
+            <div class="index-item">二、 创建项目（Virtual PC专用）</div>
+            <div class="index-item">三、 设置简体中文并编译</div>
+            <div class="index-sub">1） 设置简体中文</div>
+            <div class="index-sub">2） 编译</div>
+            <div class="index-item">四、 测试运行</div>
+            <div class="index-sub">1） 定制虚拟磁盘（VHD）</div>
+            <div class="index-sub">2） 修改启动配置</div>
+            <div class="index-item">五、 添加驱动、功能</div>
+            <div class="index-sub">1） 备份</div>
+            <div class="index-sub">2） 添加驱动</div>
+            <div class="index-sub">3） 添加功能</div>
+            <div class="index-sub">4） 编译新镜像</div>
+            <div class="index-sub">5） 更新虚拟磁盘内的镜像</div>
+            <div class="index-sub">6） 启动运行新镜像</div>
+            <div class="index-sub">7） 体验</div>
+            <div class="index-item">六、 构建并体验Silverlight版镜像（Virtual PC专用）</div>
+            <div class="index-sub">1） 重启Visual Studio并创建新项目</div>
+            <div class="index-sub">2） 定制</div>
+            <div class="index-sub">3） 配置分辨率并运行</div>
+            <div class="index-sub">4） 体验</div>
+            <div class="index-item">七、 不同主题的Silverlight界面预览</div>
+            <div class="index-sub">1） 主屏幕</div>
+            <div class="index-sub">2） 设置界面</div>
+            <div class="index-item">八、 制作通用镜像（兼容大部分虚拟机软件，如VMware）</div>
+            <div class="index-sub">1） 重启Visual Studio并创建新项目</div>
+            <div class="index-sub">2） 定制</div>
+            <div class="index-sub">3） 编译镜像</div>
+            <div class="index-sub">4） 制作通用启动镜像</div>
+            <div class="index-sub">5） 启动通用镜像</div>
+            <div class="index-item">九、 打包镜像</div>
+            <div class="index-sub">1） 打包Virtual PC虚拟机专用WINCE 7启动虚拟磁盘（VHD）</div>
+            <div class="index-sub">2） 打包 通用虚拟机 专用WINCE 7启动光盘（ISO）</div>
+            <div class="index-item">十、 总结</div>
+        </td>
+    </tr>
+</table>
+
+<!--------------- 第一部分 --------------->
+<h2 class="sec1">一、 准备</h2>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">1. 所有WEC7的环境安装后，你会发现桌面上并没有快捷方式，我们需要在开始菜单中打开</p>
+<p class="step-content" style="margin-left:103.6pt;"><img src="img/wec7peiz/image001.png" width="194" height="101" alt="开始菜单" class="img-block"></p>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">2. 找到“Microsoft Visual Studio 2008”，然后单击</p>
+<p class="step-content" style="margin-left:103.6pt;">
+    <img src="img/wec7peiz/image002.png" width="469" height="551" alt="VS2008在开始菜单1">
+    <img src="img/wec7peiz/image003.png" width="438" height="545" alt="VS2008在开始菜单2">
+</p>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">3. 然后就会出现以下界面：</p>
+<p class="step-content" style="margin-left:103.6pt;">
+    <img src="img/wec7peiz/image004.png" width="529" height="320" alt="VS启动界面1">
+    <img src="img/wec7peiz/image005.png" width="581" height="578" alt="VS启动界面2">
+</p>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">4. 这是VS2008的初始布局配置界面，注意：这里必须要选择“Platform Builder Development Settings”，因为选择这个选项后，才会加载 Platform Builder（平台构建器） 的专属的布局。否则后期需要重新调整。</p>
+<p class="step-content" style="margin-left:103.6pt;">然后点击“启动 Visual Studio(S)”</p>
+<p class="step-content" style="margin-left:103.6pt;"><img src="img/wec7peiz/image006.png" width="581" height="578" alt="选择Platform Builder设置" class="img-block"></p>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">5. 提示需要几分钟的时间</p>
+<p class="step-content" style="margin-left:103.6pt;"><img src="img/wec7peiz/image007.png" width="471" height="166" alt="加载提示" class="img-block"></p>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">6. 当出现了这个窗口，直接选择“No, I would not like to participate. (不，我不愿意参与)。”，然后点击“OK”</p>
+<p class="step-content" style="margin-left:103.6pt;"><img src="img/wec7peiz/image008.png" width="857" height="430" alt="参与提示" class="img-block"></p>
+
+<p class="step-content" style="margin-left:103.6pt; text-indent:-54pt;">7. 然后就会来到这个窗口,准备的部分已经完成了</p>
+<p class="step-content" style="margin-left:103.6pt;"><img src="img/wec7peiz/image009.png" width="1696" height="912" alt="VS主界面" class="img-block"></p>
+
+<!--------------- 第二部分 --------------->
+<h2 class="sec1">二、 创建项目（Virtual PC专用）</h2>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 在菜单栏中，逐步点击：文件 &gt; 新建 &gt;项目</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image010.png" width="342" height="215" alt="文件菜单">
+    <img src="img/wec7peiz/image011.png" width="472" height="348" alt="新建项目1">
+    <img src="img/wec7peiz/image012.png" width="459" height="361" alt="新建项目2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 弹出“新建项目”窗口，“项目类型”列表中点击“Platform Builder”选项，“模板”中选择“OS Design”</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image013.png" width="804" height="610" alt="新建项目窗口1">
+    <img src="img/wec7peiz/image014.png" width="804" height="610" alt="新建项目窗口2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">下方的配置可以自定义，我这里保持默认</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image015.png" width="804" height="610" alt="项目默认配置" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">然后点击“确定”继续</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image016.png" width="804" height="610" alt="点击确定" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 弹出了“Create an OS Design”，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image017.png" width="627" height="642" alt="创建OS设计向导" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 出现“板级支持包 (BSP)”的选择界面，由于我们的主要目的是要运行在虚拟机（我们刚才安装的Virtual PC）中，所以直接只勾选一个：“Virtual PC : x86”选项，也就是说这个镜像是专为Virtual PC适配的，包含驱动支持，但是在其他虚拟机上（如VMware）这个镜像可能是不会被兼容的（可能不能正常运行）</p>
+<p class="step-content" style="margin-left:71.6pt;">然后直接点击“下一步”</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image018.png" width="627" height="642" alt="选择BSP1">
+    <img src="img/wec7peiz/image019.png" width="627" height="642" alt="选择BSP2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 点击下一步后提示选择“设计模板”，把“Enterprise Device”展开，直接选 (5) 的那个选项:“Handheld”，因为这是最适合Virtual PC虚拟机的模板（这只是个起点模板，并不代表最终功能），然后点下一步。</p>
+
+<div style="margin-left:103.1pt; color:#A6A6A6; font-family:宋体; font-size:14pt;">
+    <p>这是对应的窗口中“具体说明”区域的一些翻译（对应序号(1)-(10)）：</p>
+    <p>(1) Consumer Media Device：提供用于能够播放家庭娱乐中心数字音频或视频内容的设备的起始点，例如用于存储音乐并在家庭立体声系统上播放音乐的 Windows Media Services 服务器。</p>
+    <p>(2) Portable Media Player：一种用于播放或存储音乐、视频及其他电子媒体的设备。</p>
+    <p>(3) Custom Device：提供一个默认不选择任何目录项（Catalog items）的操作系统设计的起始点。可能的设备范围从无显示屏的简单网络设备，到拥有图形显示、支持互联网浏览和丰富多媒体播放功能的全功能设备。（这是最有弹性的选项）</p>
+    <p>(4) Enterprise Device：为各种设备提供起始点，包括可便携连接的手持设备、工业自动化设备，以及使用远程桌面协议（RDP）的终端服务客户端（Terminal Services Client）设备。</p>
+    <p>(5) Handheld：一种便携式互联网设备，配备 640x480 或更高分辨率的显示屏，并使用基于鼠标的用户界面（UI）或基于触控笔（手写笔）的触摸屏 UI。</p>
+    <p>(6) Industrial Controller：一种工业自动化设备，例如人机界面（HMI）面板或可编程逻辑控制器（PLC）。</p>
+    <p>(7) Thin Client：一种远程桌面终端计算机，包含支持远程桌面设备所需的功能，其中包括资源受限的外壳（shell）和远程桌面协议（RDP）。</p>
+    <p>(8) Network Projector：一种显示设备，例如会议室投影仪，它通过任何 IP 网络使用远程桌面协议（RDP），将 Windows Vista 或 Windows 7 PC 的桌面显示到大型屏幕上。</p>
+    <p>(9) Small Footprint Device：为最小的、具备基础功能的 Windows Embedded Compact 运行时镜像提供起始点。</p>
+    <p>(10) Embedded Device with Silverlight XAML：为拥有基于 Windows Embedded 版 Silverlight 用户界面（UI）的设备提供起始点。</p>
+</div>
+
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image020.png" width="627" height="642" alt="设计模板1">
+    <img src="img/wec7peiz/image021.png" width="627" height="642" alt="设计模板2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">6. 保持默认，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image022.png" width="627" height="642" alt="应用程序与媒体" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">7. 展开“局域网 (LAN)”的那个选项，勾选“有线局域网”，然后点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image023.png" width="627" height="642" alt="网络1">
+    <img src="img/wec7peiz/image024.png" width="627" height="642" alt="网络2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">8. 注意：这里<span class="red">不要勾选任何选项</span>，直接点击“完成”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image025.png" width="627" height="642" alt="完成向导" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">9. 稍等一会儿，就会出现“目录项安全警告”的窗口，这个不用管，直接点击 Acknowledge 即可</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image026.png" width="535" height="411" alt="安全警告" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">10. 然后就回到了VS的界面，这个时候注意保存</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image027.png" width="1696" height="912" alt="VS界面保存" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">在菜单栏中，逐步点击 文件 &gt; 全部保存</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image028.png" width="258" height="173" alt="全部保存">
+    <img src="img/wec7peiz/image029.png" width="353" height="404" alt="保存提示" class="gray">
+</p>
+
+<!--------------- 第三部分 --------------->
+<h2 class="sec1">三、 设置简体中文并编译</h2>
+
+<h3 class="sec2">1) 设置简体中文</h3>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 回到这个 VS界面，在菜单栏中逐步点击 项目 &gt; 属性</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image030.png" width="1143" height="651" class="gray" alt="项目属性1">
+    <img src="img/wec7peiz/image031.png" width="317" height="371" class="gray" alt="项目属性2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 在属性页中展开“配置属性”，点击“Locale（区域设置/本地化）”，然后将前面三个均设为 简体中文（0804），注意第4个选择<b>“Chinese (Simplified) - (zh-Hans) —— 中文(简体) - (zh-Hans)”</b>，不要选择Chinese (PRC)</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image032.png" width="698" height="403" class="gray" alt="区域设置1">
+    <img src="img/wec7peiz/image033.png" width="698" height="403" class="gray" alt="区域设置2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image034.png" width="698" height="403" class="gray" alt="区域设置3" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image035.png" width="300" height="282" class="gray" alt="语言选择1">
+    <img src="img/wec7peiz/image036.png" width="300" height="282" class="gray" alt="语言选择2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image037.png" width="691" height="403" class="gray" alt="语言配置完成" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">设置完成后，是这个样子，然后点击确定</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image038.png" width="698" height="403" alt="最终区域设置" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 然后回到VS窗口，在左侧会有一个叫“解决方案资源管理器”的工具窗口，我们在里面选择第二个标签</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image039.png" width="1618" height="916" alt="解决方案资源管理器" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 然后回到VS窗口，在左侧会有一个叫“解决方案资源管理器”的工具窗口，我们在里面选择第二个标签，工具窗口就变成了“Catalog Items View（目录项视图）”</p>
+<p class="step-content" style="margin-left:71.6pt;">我们逐步展开 ·Core OS &gt; ·Windows Embedded Compact &gt; ·Fonts &gt; ·Scripts &gt; ·Chinese (Simplified),</p>
+<p class="step-content" style="margin-left:71.6pt;">然后勾选2个选项：“Microsoft YaHei（微软雅黑）”、“SimSun &amp; NSimSun（宋体与新宋体）”</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image040.png" width="471" height="605" alt="字体选项1">
+    <img src="img/wec7peiz/image041.png" width="455" height="581" alt="字体选项2">
+    <img src="img/wec7peiz/image042.png" width="458" height="578" alt="字体选项3">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 收回“Fonts”目录，然后逐步展开 ·International &gt; ·Code Page ，勾选“GB18030 Data Converter（GB18030 数据转换器）”</p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">a) 逐步展开 ·Language &gt; ·Chinese (Simplified)，勾选“East Asian Edit Control（东亚编辑控件）”和“ East Asian Word Wrap（东亚文字换行）”</p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">b) 展开·Input Method Editor（输入法编辑器）&gt; ·MSPY 3.0 for Windows Embedded Compact（微软拼音输入法 3.0），勾选“MSPY 3.0 for Windows Embedded Compact（微软拼音输入法 3.0）”、两个选项“Double Spelling (Shuang Pin) soft keyboard（双拼软键盘）”</p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">c) 展开“MSPY 3.0 for Windows Embedded Compact”目录，选择1.7 MB - Standard Database（标准词库）</p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">d) 展开并勾选“Pocket IME”，勾选“Double Spelling (Shuang Pin) soft keyboard（双拼软键盘）”</p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">e) 展开“Locale”目录，勾选“Chinese (PRC)”和“Chinese (Simplified)”</p>
+<p class="step-content" style="margin-left:71.6pt;"><span class="red">其他都不要勾选</span></p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image043.png" width="461" height="578" alt="国际化设置1">
+    <img src="img/wec7peiz/image044.png" width="457" height="584" alt="国际化设置2">
+    <img src="img/wec7peiz/image045.png" width="449" height="586" alt="国际化设置3">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">这样就成功的设置了中文</p>
+
+<h3 class="sec2">2) 编译</h3>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 检查无误后，就可以编译了，在菜单栏中，逐步选择 生成 &gt; 生成解决方案，也可以直接按 F7 键</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image046.png" width="1697" height="912" alt="生成解决方案菜单">
+    <img src="img/wec7peiz/image047.png" width="504" height="457" alt="生成按钮">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 选择就正式开始编译镜像了，可以看到“输出”的工具窗口在不断的滚动，说明正在编译，此过程会花费比较长的时间，希望耐心等待！</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image048.png" width="1697" height="912" class="gray" alt="编译输出" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 我这里大概编译了 10 分钟就编译完成了，当您发现“输出”工具窗口里出现了“========== 生成: 成功或最新1 个，失败0 个，跳过0 个==========”，说明编译成功完成！</p>
+<p class="step-content" style="margin-left:71.6pt;">注意：VS窗口先不要关掉，放在旁边备用</p>
+<p class="step-content" style="margin-left:71.6pt;">编译的镜像就是 你的目录\WINCE700\OSDesigns\OSDesign1\OSDesign1\RelDir\VirtualPC_x86_Release\NK.bin（我的是：C:\WINCE700\OSDesigns\OSDesign1\OSDesign1\RelDir\VirtualPC_x86_Release\NK.bin）</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image049.png" width="574" height="217" alt="NK.bin路径" class="img-block"></p>
+
+<!--------------- 第四部分 --------------->
+<h2 class="sec1">四、 测试运行</h2>
+
+<h3 class="sec2">1) 定制虚拟磁盘（VHD）</h3>
+<p class="normal-text" style="margin-left:40.5pt;">现在，我们已经成功地编译出来了镜像，现在到了测试运行的时间（接下来的路径将按照我的安装路径）</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 打开 Windows资源管理器 ，导航到 C:\WINCE700\platform\VirtualPC\VM</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image050.png" width="806" height="554" alt="VM文件夹" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 新建一个文件夹，将这三个文件复制到新建文件夹，做备份，然后保存窗口打开，放在旁边备用</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image051.png" width="806" height="554" alt="复制备份1">
+    <img src="img/wec7peiz/image052.png" width="807" height="554" alt="复制备份2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 然后打开开始菜单，找到“Windows PowerShell”或者“命令提示符”，然后右击以管理员身份运行</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image053.png" width="419" height="545" alt="PowerShell1">
+    <img src="img/wec7peiz/image054.png" width="417" height="546" alt="PowerShell2">
+    <img src="img/wec7peiz/image055.png" width="415" height="543" alt="PowerShell3">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 就出现了这个蓝色的命令行窗口，这就是“Windows PowerShell”，管理员身份的cmd也可以，我们需要输入 4 行命令</p>
+<p class="step-content" style="margin-left:71.6pt;">我们输入第1个命令：<span style="font-family:'Courier New'; color:blue; background:#F2F2F2;">diskpart</span></p>
+<p class="step-content" style="margin-left:71.6pt;">回车</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image056.png" width="997" height="346" alt="diskpart" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">我们输入第2个命令：<span style="font-family:'Courier New'; color:blue; background:#F2F2F2;">select vdisk file="C:\WINCE700\platform\VirtualPC\VM\hd0_sample.vhd"</span></p>
+<p class="step-content" style="margin-left:71.6pt;">（注意换为你的目录），回车</p>
+<p class="step-content" style="margin-left:71.6pt;">此时就会有“驱动安装成功”的提示，我们不用管它</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image057.png" width="997" height="346" alt="选择vhd">
+    <img src="img/wec7peiz/image058.png" width="463" height="121" alt="驱动安装">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">我们输入第3个命令：<span style="font-family:'Courier New'; color:blue; background:#F2F2F2;">expand vdisk maximum=128</span></p>
+<p class="step-content" style="margin-left:71.6pt;"><span class="red">注意：千万不要超过 128 ，否则实测镜像引导不了， 128 为最佳</span></p>
+<p class="step-content" style="margin-left:71.6pt;">回车</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image059.png" width="997" height="346" class="gray" alt="扩展vdisk" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">我们输入第4个命令：<span style="font-family:'Courier New'; color:blue; background:#F2F2F2;">detail vdisk</span></p>
+<p class="step-content" style="margin-left:71.6pt;">回车</p>
+<p class="step-content" style="margin-left:71.6pt;">然后请检查“虚拟大小”的数值是否是 “128 MB”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image060.png" width="997" height="346" alt="检查虚拟大小" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">最后，就可以关闭了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image061.png" width="997" height="346" alt="关闭" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 现在，右击以管理员身份运行DiskGenius（我已经准备好了在网盘，您可以直接使用）</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image062.png" width="589" height="90" class="gray" alt="DiskGenius" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">6. 在菜单栏中逐步选择 磁盘 &gt; 打开虚拟磁盘文件</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image063.png" width="1228" height="920" class="gray" alt="打开虚拟磁盘菜单">
+    <img src="img/wec7peiz/image064.png" width="291" height="688" class="gray" alt="菜单选项">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">7. 在浏览窗口，导航到 C:\WINCE700\platform\VirtualPC\VM （替换为你的目录），然后选择 hd0_sample.vhd ，点击打开按钮</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image065.png" width="960" height="540" alt="选择vhd文件" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">8. 然后，点击“空闲”部分的可视化区域，然后点击“新建分区”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image066.png" width="1228" height="920" alt="新建分区" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">分区类型 选择“主磁盘分区”，文件系统 选择“FAT32” ，然后点击“确定”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image067.png" width="424" height="503" alt="分区设置" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">9. 回到了主界面，点击“保存更改”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image068.png" width="1228" height="920" alt="保存更改" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">均选择“是”</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image069.png" width="442" height="164" alt="确认保存1">
+    <img src="img/wec7peiz/image070.png" width="430" height="174" alt="确认保存2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">10. 再次回到了主界面，双击“主分区(1)”，打开后会显示空白界面，放在旁边备用</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image071.png" width="1228" height="920" alt="主分区空白" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">11. 打开 Windows资源管理器 ，导航到 C:\WINCE700\OSDesigns\OSDesign1\OSDesign1\RelDir\VirtualPC_x86_Release（换为你的目录）</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image072.png" width="806" height="554" alt="Release目录" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">在搜索栏中搜索“NK.bin”，然后选定文件，CTRL + C复制，回到刚才DiskGenius的空白目录的界面，点一下，然后CTRL + V粘贴，（或者直接拖动）</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image073.png" width="806" height="554" alt="搜索NK.bin">
+    <img src="img/wec7peiz/image074.png" width="806" height="554" alt="粘贴NK.bin">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">然后会提示这个弹窗，直接点“是”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image075.png" width="479" height="164" alt="确认复制" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">点击“确定”，然后点击“完成”</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image076.png" width="576" height="495" alt="复制进度">
+    <img src="img/wec7peiz/image077.png" width="558" height="420" class="gray" alt="复制完成">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">然后就可以看到成功的复制了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image078.png" width="1228" height="920" alt="复制后内容" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">12. 然后关闭虚拟磁盘文件</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image079.png" width="1223" height="909" alt="关闭虚拟磁盘" class="img-block"></p>
+
+<h3 class="sec2">2) 修改启动配置</h3>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 回到刚才打开的 Windows资源管理器窗口（C:\WINCE700\platform\VirtualPC\VM）</p>
+<p class="step-content" style="margin-left:71.6pt;">找到“cevm.vmc”（ Virtual PC虚拟机配置文件），双击打开它</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image080.png" width="806" height="554" alt="cevm.vmc" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">就会发现自动打开了 Virtual PC ，并自动启动了虚拟机“cevm”，记住这个名字后面要用</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image081.png" width="660" height="483" alt="VPC启动cevm" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 到这个界面的时候，我们立刻按下空格，进入“配置菜单”，我们要修改一些设置</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image082.png" width="660" height="483" alt="启动界面" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">就会出现以下界面，现在就是配置菜单的界面了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image083.png" width="660" height="483" alt="配置菜单" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">我们按下键盘上的“2”，修改启动设备</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image084.png" width="660" height="483" alt="启动设备选项" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">这里我们按下“1”，因为刚才的所有操作都是在为1选项的离线运行做准备，因为2选项的网络下载实测并不是很稳定</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image085.png" width="660" height="483" alt="选择离线启动" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">然后自动回到了主菜单，我们按下“4”，进入网络配置</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image086.png" width="660" height="483" alt="网络配置菜单" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">然后按下“2”，我们要禁用 KITL 因为这样就可以脱离调试环境，无此环境时照样正常启动，而不是无限黑屏等待</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image087.png" width="660" height="483" alt="KITL设置" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">按下“y”， KITL 就禁用了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image088.png" width="660" height="483" alt="KITL已禁用" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">然后按下“0”，返回主菜单</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image089.png" width="660" height="483" alt="返回主菜单" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">按下“7”，保存</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image090.png" width="660" height="483" alt="保存配置" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">最后按下“0”，就开始启动WINCE了！因为保存了，下一次就不需要重新配置了</p>
+<p class="step-content" style="margin-left:71.6pt;">启动WINCE可能需要几分钟的时间，观察左下角亮起的磁盘小图标，说明此时正在读取磁盘、解压并加载到内存</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image091.png" width="660" height="483" alt="正在加载" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">当看到窗口突然变大，说明加载已经完成，到了启动时间，还需要等待一会</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image092.png" width="660" height="563" alt="窗口变大" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 终于，WINCE7.0中文版成功的启动了！这里作者也是第一次见到WEC7的中文版界面。您可以在这里自由探索，但这些都是基础功能，而且没有驱动，后期将会继续添加功能</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image093.png" width="660" height="563" alt="WEC7桌面1">
+    <img src="img/wec7peiz/image094.png" width="660" height="563" alt="WEC7桌面2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image095.png" width="660" height="563" alt="开始菜单">
+    <img src="img/wec7peiz/image096.png" width="660" height="563" alt="资源管理器">
+</p>
+
+<!--------------- 第五部分 --------------->
+<h2 class="sec1">五、 添加驱动、功能</h2>
+<p class="normal-text" style="margin-left:40.5pt;">现在，我们已经成功的 创建、配置、编译、启动 了一次自己做的镜像，但没有驱动和更多功能，所以接下来就会配置它，由于接下来的教程与前面的 配置方式 类似，对于我们来说肯定是不在那么生疏了，变的一点简单了</p>
+<p class="normal-text" style="margin-left:40.5pt;">这一部分将会给镜像添加更多功能和驱动，优化体验</p>
+
+<h3 class="sec2">1) 备份</h3>
+<p class="step-content" style="margin-left:71.6pt;">在此之前，我们需要对我们的项目配置文件做一下备份，以防万一</p>
+<p class="step-content" style="margin-left:71.6pt;">首先导航到你的项目目录，比如我的是 C:\WINCE700\OSDesigns\OSDesign1\OSDesign1</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image097.png" width="806" height="554" alt="项目目录" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">找到“.pbxml”后缀的文件：OSDesign1.pbxml，复制一个，作为副本，然后就备份好了</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img src="img/wec7peiz/image098.png" width="806" height="555" alt="复制pbxml1">
+    <img src="img/wec7peiz/image099.png" width="806" height="554" alt="复制pbxml2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">回到VS的界面，看到最左侧的工具窗口</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image100.png" width="1618" height="916" alt="VS工具窗口" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">点击第二个选项卡，逐步展开 ·Core OS &gt; ·Windows Embedded Compact，可以看到这些就是配置功能的界面了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img src="img/wec7peiz/image101.png" width="462" height="577" alt="目录项视图" class="img-block"></p>
+
+<div class="note-box">
+    <p>为了您便于了解这里的OSDesign目录的所有功能模块结构，作者做了一个“<a href="OSDesignfanyi.html">OSDesign架构树形图翻译</a>”的文档，这个文档包含对应的树形图中英文翻译</p>
+    <p>点击<a href="OSDesignfanyi.html">这里</a>即可查看</p>
+</div>
+
+<h3 class="sec2">2) 添加驱动</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 现在我们要给我们的VPC版的 Windows CE 7.0 镜像添加驱动了</p>
+<p class="step-content" style="margin-left:71.6pt;">展开 ·BSP (板级支持包) &gt; ·Virtual PC : x86 &gt; ·Device Drivers（硬件驱动），然后分别展开：·Audio（音频）、·Keyboard(键盘)、·Networking(网络)</p>
+<p class="step-content" style="margin-left:71.6pt;">分别勾选：“SoundBlaster 16 Audio”、“VCEPC Keyboard driver:VPC2007”、“DEC 21x40 Ethernet”这三个选项</p>
+<p class="step-content" style="margin-left:71.6pt;">添加这些，系统就可以上网和发出声音，并且更佳兼容键盘</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="455" height="572" src="img/wec7peiz/image102.png" class="gray" alt="驱动1">
+    <img border="0" width="447" height="580" src="img/wec7peiz/image103.png" class="gray" alt="驱动2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">展开 ·Core OS &gt; ·Windows Embedded Compact &gt; ·Device Drivers（设备驱动） &gt; ·Storage Devices（存储设备） </p>
+<p class="step-content" style="margin-left:71.6pt;">勾选： “ATAPI PCI Support（IDE 控制器驱动）”</p>
+<p class="step-content" style="margin-left:71.6pt;">添加这些，就可以读取硬盘和光驱，这个是非常重要的</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="447" height="572" src="img/wec7peiz/image104.png" alt="存储驱动" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">展开 ·Core OS &gt; ·Windows Embedded Compact &gt; ·File Systems and Data Store（文件系统和数据存储），</p>
+<p class="step-content" style="margin-left:71.6pt;">然后再展开 ·File System - Internal (Choose 1)（文件系统 - 内部（选择1） 、 ·Registry Storage (Choose 1)（注册表存储（选择1） 、 ·Storage Manager（存储管理器）</p>
+<p class="step-content" style="margin-left:71.6pt;">勾选：“RAM and ROM File System（RAM和ROM文件系统）”，“Hive-based Registry（基于蜂巢的注册表）”，“Storage Manager（存储管理器）”，“FAT File System（FAT文件系统）”，“Partition Driver（分区驱动）”</p>
+<p class="step-content" style="margin-left:71.6pt;"><b>注意：必须要将“Storage Manager（存储管理器）”、“FAT File System（FAT文件系统）”“Partition Driver（分区驱动）”，点成 勾选 的状态，而不是 方块 状</b></p>
+<p class="step-content" style="margin-left:71.6pt;">添加这些，就可以有 文件可持久化、设置可保存 的功能了，这也是非常重要的</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="442" height="576" src="img/wec7peiz/image105.png" alt="文件系统1">
+    <img border="0" width="445" height="571" src="img/wec7peiz/image106.png" alt="文件系统2">
+</p>
+
+<h3 class="sec2">3) 添加功能</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 由于系统界面的默认主题是比较古老的，但好在提供了一个叫“Windows XP 示例皮肤”的选项，所以我们可以使用这个皮肤有更好的体验</p>
+<p class="step-content" style="margin-left:71.6pt;">展开 ·Core OS（核心操作系统） &gt; ·Shell and User Interface（外壳与用户界面） &gt; ·User Interface（用户界面）&gt; ·Customizable UI（可定制用户界面）</p>
+<p class="step-content" style="margin-left:71.6pt;">勾选：“Windows XP-like Sample Skin（类 Windows XP 示例皮肤）”</p>
+<p class="step-content" style="margin-left:71.6pt;">这会拥有一个类似于经典 Windows XP 的桌面和任务栏</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="452" height="575" src="img/wec7peiz/image107.png" alt="XP皮肤1">
+    <img border="0" width="453" height="575" src="img/wec7peiz/image108.png" alt="XP皮肤2">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 接下来添加 Windows Media Player 功能</p>
+<p class="step-content" style="margin-left:71.6pt;">展开： ·Core OS（核心操作系统） &gt; ·Graphics and Multimedia Technologies（图形与多媒体技术） &gt; ·Media &gt; ·Windows Media Player &gt; ·Windows Media Player Applications（媒体播放器应用程序）</p>
+<p class="step-content" style="margin-left:71.6pt;">勾选：Sample Media Content（示例媒体内容）、Windows Music Player（音乐播放器）、Windows Photo Viewer（图片查看器）和 Windows Video Player（视频播放器）、Windows Media Player OCX 和 OCX v7.0</p>
+<p class="step-content" style="margin-left:71.6pt;">这样就为系统添加了完整的多媒体的功能</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="443" height="577" src="img/wec7peiz/image109.png" alt="媒体播放器" class="gray img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 接下来添加配套应用程序</p>
+<p class="step-content" style="margin-left:71.6pt;">展开：·Core OS（核心操作系统） &gt; ·Windows Embedded Compact &gt; ·Applications - End User（最终用户应用程序），之后展开所以子目录</p>
+<p class="step-content" style="margin-left:71.6pt;">将这里的全部勾上</p>
+<p class="step-content" style="margin-left:71.6pt;">这样就添加了更多程序</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="448" height="578" src="img/wec7peiz/image110.png" alt="应用程序" class="gray img-block"></p>
+
+<h3 class="sec2">4) 编译新镜像</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 好了，现在就选好了，为了不要那么多体积，就选择这些，我们要开始编译镜像了，但编译之前，为了避免出现问题，我们需要清理一下之前生成的解决方案</p>
+<p class="step-content" style="margin-left:71.6pt;">在菜单栏中，点击“生成”，然后点击“清理解决方案”</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="1618" height="916" src="img/wec7peiz/image111.png" alt="清理解决方案菜单">
+    <img border="0" width="337" height="423" src="img/wec7peiz/image112.png" alt="清理选项">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">然后在最下面的“输出”的工具窗口，就会输出提示，当显示“========== 清理: 成功1 个，失败0 个，跳过0 个==========”说明清理完成，然后继续步骤</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="1618" height="916" src="img/wec7peiz/image113.png" alt="清理输出" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">再次在菜单栏中点击“生成”，这一次点击“生成解决方案”，或者按F7</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="371" height="430" src="img/wec7peiz/image114.png" alt="生成菜单" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">就会和第一次生成镜像的方式一样，开始生成镜像了，在最下面的“输出”的工具窗口，就会不断输出滚动提示，仍要一些时间才能生成完成，希望您耐心等待！</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="1618" height="916" src="img/wec7peiz/image115.png" alt="生成进行中" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 当您发现“输出”工具窗口里出现了“========== 生成: 成功或最新1 个，失败0 个，跳过0 个==========”，说明编译成功完成！</p>
+<p class="step-content" style="margin-left:71.6pt;">镜像路径在 C:\WINCE700\OSDesigns\OSDesign1\OSDesign1\RelDir\VirtualPC_x86_Release\NK.bin（我的路径）</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="607" height="165" src="img/wec7peiz/image116.png" alt="生成成功" class="img-block"></p>
+
+<h3 class="sec2">5) 更新虚拟磁盘内的镜像</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 现在我们需要修改虚拟磁盘文件了，我们要将里面的镜像换为我们新生成的</p>
+<p class="step-content" style="margin-left:71.6pt;">和刚才一样，以管理员身份运行 DiskGenius</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="593" height="84" src="img/wec7peiz/image117.png" alt="DiskGenius图标" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 打开虚拟磁盘文件，或直接拖动到DiskGenius窗口的淡黄色区域</p>
+<p class="step-content" style="margin-left:71.6pt;">路径在 C:\WINCE700\platform\VirtualPC\VM\hd0_sample.vhd</p>
+<p class="step-content" style="margin-left:71.6pt;">然后双击“主分区(1)”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="1228" height="920" src="img/wec7peiz/image118.png" alt="主分区" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 选定我们旧的“NK.bin”镜像，右击选择“强制删除”，或者直接按键盘上面的“Delete”按键</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="455" height="454" src="img/wec7peiz/image119.png" alt="删除旧NK" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">选择“是”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="680" height="174" src="img/wec7peiz/image120.png" alt="确认删除" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 在资源管理器中导航到 C:\WINCE700\OSDesigns\OSDesign1\OSDesign1\RelDir\VirtualPC_x86_Release，然后在搜索栏搜索“NK.bin”，就会出现此文件</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="806" height="554" src="img/wec7peiz/image121.png" alt="新NK.bin" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">将此文件和上次一样，拖动到 DiskGenius窗口 的空白区域，或者快捷键复制粘贴（CTRL + C 或 V）</p>
+<p class="step-content" style="margin-left:71.6pt;">然后就会又出现3个窗口，分别选择“是”、“确定”、“完成”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="1228" height="920" src="img/wec7peiz/image122.png" alt="粘贴新NK" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 然后右击选定，并关闭虚拟磁盘</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="1227" height="907" src="img/wec7peiz/image123.png" alt="关闭虚拟磁盘" class="img-block"></p>
+
+<h3 class="sec2">6) 启动运行新镜像</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 在开始菜单中，打开 Microsoft Virtual PC </p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="491" height="476" src="img/wec7peiz/image124.png" alt="VPC开始菜单" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 在开始菜单中，打开 Microsoft Virtual PC ，选定我们上次打开的虚拟机，名字叫“cevm”，然后点击设置</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="367" height="258" src="img/wec7peiz/image125.png" alt="cevm虚拟机" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 在设置里，选择“内存”选项卡，我们要将内存调大一点，512 MB（至少 256 MB），这里我从原来的 128 MB 改为 512 MB，然后点击确定</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="700" height="433" src="img/wec7peiz/image126.png" alt="调整内存" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 然后启动这个虚拟机</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="367" height="258" src="img/wec7peiz/image127.png" alt="启动cevm" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">就会出现以下界面</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image128.png" alt="启动画面1">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image129.png" alt="启动画面2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="660" height="483" src="img/wec7peiz/image130.png" alt="启动画面3" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 这一次我们不需要再次按空格来配置了，因为上一次我们已经保存了配置在此磁盘，我们只需要等待就可以了，这会花费几分钟</p>
+<p class="step-content" style="margin-left:71.6pt;">当发现窗口突然变大，说明读取完成，现在正在加载系统，这还需要再次等一会</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="660" height="563" src="img/wec7peiz/image131.png" alt="加载系统" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">6. 几分钟后，伴随着启动音效，终于到了桌面，此时就会发现桌面上多了很多应用，主题也变成了“XP”皮肤，仔细看就会发现，底下的网络标识，不停在闪烁</p>
+<p class="step-content" style="margin-left:71.6pt;">这就说明声卡和网卡驱动成功的安装完成！</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="563" src="img/wec7peiz/image132.png" alt="新桌面1">
+    <img border="0" width="660" height="563" src="img/wec7peiz/image133.png" alt="新桌面2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">点开“我的设备”，就会发现成功地读取到了硬盘！</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="660" height="563" src="img/wec7peiz/image134.png" alt="我的设备" class="img-block"></p>
+
+<h3 class="sec2">7) 体验</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 接下来让我们体验一下吧！</p>
+
+<!-- 体验表格 -->
+<table border="0" cellspacing="0" cellpadding="0" style="margin-left:71.6pt; border-collapse:collapse;">
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体;"><img border="0" width="660" height="563" src="img/wec7peiz/image135.png" alt="系统属性"></p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体;"><img border="0" width="660" height="563" src="img/wec7peiz/image136.png" alt="IE浏览器"></p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">系统属性界面</p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">IE 浏览器</p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center;"><img border="0" width="660" height="563" src="img/wec7peiz/image137.png" alt="WordPad"></p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center;"><img border="0" width="660" height="563" src="img/wec7peiz/image138.png" alt="远程桌面"></p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">WordPad</p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">远程桌面</p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center;"><img border="0" width="660" height="563" src="img/wec7peiz/image139.png" alt="音乐播放器"></p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center;"><img border="0" width="660" height="563" src="img/wec7peiz/image140.png" alt="同步软件"></p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">音乐播放器</p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">同步软件</p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center;"><img border="0" width="660" height="563" src="img/wec7peiz/image141.png" alt="图片查看器"></p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center;"><img border="0" width="660" height="563" src="img/wec7peiz/image142.png" alt="视频播放器"></p></td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">图片查看器</p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">视频播放器</p></td>
+    </tr>
+</table>
+
+<div class="note-box" style="margin-top:12pt;">
+    <p>还有更多功能，这里不再展示，您可以定制更多功能的镜像，可以参照 “<a href="OSDesignfanyi.html">OSDesign架构树形图翻译</a>”的中英对照翻译文档，这个文档包含对应的树形图中英文翻译</p>
+</div>
+
+<!--------------- 第六部分：Silverlight版镜像 --------------->
+<h2 class="sec1">六、 构建并体验Silverlight版镜像（Virtual PC专用）</h2>
+<p class="normal-text" style="margin-left:40.5pt;">以上就是 默认shell的界面了，当然WEC7最不能错过的是Silverlight shell，这个会比默认shell更美观，我们来看看吧</p>
+
+<h3 class="sec2">1) 重启Visual Studio并创建新项目</h3>
+<p class="normal-text" style="margin-left:40.5pt;">我们<b>不能在原有的项目进行修改了</b>，因为我们需要取消勾选很多选项，否则不能正常运行，这会导致变的事情更复杂，所以我们需要新建一个干净的项目，之后的步骤基本上和之前一样，但有一些小改动</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 我们先要重启一下 Microsoft Visual Studio 2008 </p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="517" height="337" src="img/wec7peiz/image143.png" alt="重启VS">
+    <img border="0" width="431" height="539" src="img/wec7peiz/image144.png" alt="开始菜单VS">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 打开之后，我们要新建项目</p>
+<p class="step-content" style="margin-left:71.6pt;">在左上角的菜单栏中 逐步选择 文件 &gt; 新建 &gt; 项目</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="460" height="405" src="img/wec7peiz/image145.png" alt="新建项目菜单" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 这时，会打开“新建项目”窗口，和第一次一样选择，名称和路径可自定义但一定要记住，然后点击确定</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="804" height="610" src="img/wec7peiz/image146.png" alt="新建OS Design" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 又弹出“创建系统设计”的欢迎窗口，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image147.png" alt="创建向导" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 出现“板级支持包 (BSP)”的选择界面，选择第四个选项“Virtual PC : x86”，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image148.png" alt="选择BSP VPC" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">6. “设计模板”界面中，注意选择最后一个选项“Embedded Device with Silverlight XAML（带 Silverlight XAML 的嵌入式设备）”，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image149.png" alt="Silverlight模板" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">7. “用户界面屏幕尺寸”界面中，勾选“尺寸”，然后保持默认“800 x 480 横向”第二个选项，然后点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image150.png" alt="分辨率选择" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">8. “应用程序”界面中，首先勾选“示例主屏幕 (Sample Home Screen)”，然后剩余的全部勾上，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image151.png" alt="Silverlight应用" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">9. 接着和之前一样到了完全一样的结束向导的界面，直接点击完成，不要勾选任何选项</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image152.png" alt="完成向导" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">10. 接着又会弹出安全警告的窗口，直接选择“我已知晓”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="535" height="411" src="img/wec7peiz/image153.png" alt="安全警告" class="img-block"></p>
+
+<h3 class="sec2">2) 定制</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 然后出现了 VS的主界面，接下来我们就要设置中文了</p>
+<p class="step-content" style="margin-left:71.6pt;">设置中文的步骤和之前 第三部分 的 步骤1、2 一模一样，可以查看之前的教程，这里不再提及</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 然后就要添加驱动</p>
+<p class="step-content" style="margin-left:71.6pt;">这和前面的 第五部分 的 步骤1 ，也是完全一样，这里也不再提及</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 接下来我们要补充一些基础设置选项</p>
+<p class="step-content" style="margin-left:71.6pt;">展开 ·Core OS（核心操作系统） &gt; ·Shell and User Interface（外壳与用户界面） &gt; ·User Interface（用户界面）</p>
+<p class="step-content" style="margin-left:71.6pt;">将这里的全部勾上</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="449" height="577" src="img/wec7peiz/image154.png" alt="UI设置" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">展开 ·Core OS（核心操作系统） &gt; ·Shell and User Interface（外壳与用户界面） &gt; ·Shell（外壳） ，然后展开 Graphical Shell (Choose 1)（图形外壳，单选）</p>
+<p class="step-content" style="margin-left:71.6pt;">勾选 Silverlight based Message Box（基于 Silverlight 的消息框），在 Theme 目录中，可以看到有 4 个主题，我们先选择第一个：默认主题</p>
+<p class="step-content" style="margin-left:71.6pt;">其实，不同分辨率的主题也有不同风格样式，这里我们以 800x480 为主</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="447" height="580" src="img/wec7peiz/image155.png" alt="Silverlight主题" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 然后就可以编译了，点击 生成解决方案 ，编译的方式也是和上次一样</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="340" height="418" src="img/wec7peiz/image156.png" alt="生成" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 当底部“输出”工具查看出现“========== 生成: 成功或最新1 个，失败0 个，跳过0 个==========”</p>
+<p class="step-content" style="margin-left:71.6pt;">说明编译成功</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="480" height="165" src="img/wec7peiz/image157.png" alt="编译成功" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">6. 之后我们需要把虚拟磁盘里的镜像替换为我们新生成的镜像</p>
+<p class="step-content" style="margin-left:71.6pt;">这部分的步骤和上面的 第五部分 的第 7 – 11 步骤 完全一样，这里不再提及</p>
+
+<h3 class="sec2">3) 配置分辨率并运行</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 之后打开 VPC 虚拟机，选定“cevm”名称的虚拟机，点击启动</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="367" height="258" src="img/wec7peiz/image158.png" alt="启动cevm" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 在这个界面时，我们需要点击运行空格，进入配置菜单界面，我们需要调整一下分辨率，我们要将分辨率调整为 800x480 兼容的大小，避免内容超出屏幕外</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image159.png" alt="启动界面">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image160.png" alt="配置菜单">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">按下5，兼进入显示设置，</p>
+<p class="step-content" style="margin-left:71.6pt;">然后按2，修改显示分辨率</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image161.png" alt="显示设置1">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image162.png" alt="显示设置2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">按下d，颜色深度改为 16位 ，</p>
+<p class="step-content" style="margin-left:71.6pt;">然后按e，将分辨率改为最适合的大小：800x512</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image163.png" alt="修改色深">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image164.png" alt="分辨率">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">按下3，修改可视显示区域</p>
+<p class="step-content" style="margin-left:71.6pt;">按下l（L），选择800x480，这样就能完美显示了</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image165.png" alt="可视区域1">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image166.png" alt="选择800x480">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">按下0，返回</p>
+<p class="step-content" style="margin-left:71.6pt;">按下7，保存</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image167.png" alt="返回">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image168.png" alt="保存">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">最后按下0，退出配置菜单，开始启动</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="660" height="483" src="img/wec7peiz/image169.png" alt="退出">
+    <img border="0" width="820" height="595" src="img/wec7peiz/image170.png" alt="启动中">
+</p>
+
+<h3 class="sec2">4) 体验</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 过了几分钟，就成功地启动完成了！可以看到Silverlight shell 版镜像确实是比普通 shell非常美观</p>
+<p class="step-content" style="margin-left:71.6pt;">接下来我们体验一下吧！</p>
+
+<table border="0" cellspacing="0" cellpadding="0" style="margin-left:71.6pt; border-collapse:collapse;">
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;"><p><img border="0" width="820" height="595" src="img/wec7peiz/image171.png" alt="主屏幕"></p></td>
+        <td valign="top" style="padding:0cm 5.4pt;"><p><img border="0" width="820" height="595" src="img/wec7peiz/image172.png" alt="IE"></p></td>
+    </tr>
+    <tr>
+        <td style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">主屏幕</p></td>
+        <td style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">Silverlight版IE</p></td>
+    </tr>
+    <tr>
+        <td style="padding:0cm 5.4pt;"><p><img border="0" width="820" height="595" src="img/wec7peiz/image173.png" alt="设置"></p></td>
+        <td style="padding:0cm 5.4pt;"><p><img border="0" width="820" height="595" src="img/wec7peiz/image174.png" alt="设置子界面"></p></td>
+    </tr>
+    <tr>
+        <td style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">设置</p></td>
+        <td style="padding:0cm 5.4pt;"><p style="text-align:center; font-size:14pt; font-family:宋体; color:gray;">设置子界面</p></td>
+    </tr>
+</table>
+
+<!--------------- 第七部分：主题预览 --------------->
+<h2 class="sec1">七、 不同主题的Silverlight界面预览</h2>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="446" height="577" src="img/wec7peiz/image175.png" alt="主题列表" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">不同分辨率的主题也有不同风格样式，这里作者特意编译了12个不同样式的镜像，我们来欣赏一下吧！</p>
+
+<h3 class="sec2">1) 主屏幕</h3>
+
+<table class="theme-table">
+    <tr><td colspan="4" style="border:none; border-bottom:1pt solid windowtext; font-size:14pt; font-family:宋体; padding:0cm 5.4pt;">主屏幕</td></tr>
+    <tr>
+        <td style="width:24.8pt;"></td>
+        <td style="width:280.85pt; font-size:14pt; font-family:宋体;">480x640分辨率</td>
+        <td style="width:520.9pt; font-size:14pt; font-family:宋体;">800x480分辨率</td>
+        <td style="width:588.25pt; font-size:14pt; font-family:宋体;">1920x1080分辨率</td>
+    </tr>
+    <tr>
+        <td style="font-size:14pt; font-family:宋体;">默认主题</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image176.jpg" alt="480默认"></td>
+        <td><img border="0" width="680" height="408" src="img/wec7peiz/image177.jpg" alt="800默认"></td>
+        <td><img border="0" width="770" height="432" src="img/wec7peiz/image178.jpg" alt="1080默认"></td>
+    </tr>
+    <tr>
+        <td style="font-size:14pt; font-family:宋体;">主题1</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image179.jpg" alt="480主题1"></td>
+        <td><img border="0" width="680" height="408" src="img/wec7peiz/image180.jpg" alt="800主题1"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image181.jpg" alt="1080主题1"></td>
+    </tr>
+    <tr>
+        <td style="font-size:14pt; font-family:宋体;">主题2</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image182.jpg" alt="480主题2"></td>
+        <td><img border="0" width="680" height="408" src="img/wec7peiz/image183.jpg" alt="800主题2"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image184.jpg" alt="1080主题2"></td>
+    </tr>
+    <tr>
+        <td style="font-size:14pt; font-family:宋体;">主题3</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image185.jpg" alt="480主题3"></td>
+        <td><img border="0" width="680" height="408" src="img/wec7peiz/image186.jpg" alt="800主题3"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image187.jpg" alt="1080主题3"></td>
+    </tr>
+</table>
+
+<h3 class="sec2">2) 设置界面</h3>
+
+<table class="theme-table">
+    <tr><td colspan="4" style="border:none; border-bottom:1pt solid windowtext; font-size:14pt; font-family:宋体;">设置界面</td></tr>
+    <tr>
+        <td style="width:24.8pt;"></td>
+        <td style="width:280.85pt; font-size:14pt; font-family:宋体;">480x640分辨率</td>
+        <td style="width:520.9pt; font-size:14pt; font-family:宋体;">800x480分辨率</td>
+        <td style="width:586.8pt; font-size:14pt; font-family:宋体;">1920x1080分辨率</td>
+    </tr>
+    <tr>
+        <td>默认主题</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image188.jpg" alt="480默认设置"></td>
+        <td><img border="0" width="680" height="408" src="img/wec7peiz/image189.jpg" alt="800默认设置"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image190.jpg" alt="1080默认设置"></td>
+    </tr>
+    <tr>
+        <td>主题1</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image191.jpg" alt="480主题1设置"></td>
+        <td><img border="0" width="680" height="408" src="img/wec7peiz/image192.jpg" alt="800主题1设置"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image181.jpg" alt="1080主题1设置"></td>
+    </tr>
+    <tr>
+        <td>主题2</td>
+        <td><img border="0" width="360" height="479" src="img/wec7peiz/image193.jpg" alt="480主题2设置"></td>
+        <td><img border="0" width="680" height="407" src="img/wec7peiz/image194.jpg" alt="800主题2设置"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image195.jpg" alt="1080主题2设置"></td>
+    </tr>
+    <tr>
+        <td>主题3</td>
+        <td><img border="0" width="360" height="480" src="img/wec7peiz/image196.jpg" alt="480主题3设置"></td>
+        <td><img border="0" width="678" height="407" src="img/wec7peiz/image197.jpg" alt="800主题3设置"></td>
+        <td><img border="0" width="768" height="432" src="img/wec7peiz/image198.jpg" alt="1080主题3设置"></td>
+    </tr>
+</table>
+
+<!--------------- 第八部分：通用镜像 --------------->
+<h2 class="sec1">八、 制作通用镜像（兼容大部分虚拟机软件，如VMware）</h2>
+
+<p class="normal-text" style="margin-left:40.5pt; font-size:18pt; color:blue;">简要说明：</p>
+<p class="normal-text" style="margin-left:40.5pt;">刚才我们制作了多个镜像，它们集成了完整的声卡、网卡和存储驱动，功能丰富但体积较大。这些镜像专为 Virtual PC 虚拟机设计，因为它们基于一个与 Virtual PC 原生兼容的 WINCE 系统 bootloader 虚拟磁盘模板。该 bootloader 不依赖 DOS，可直接加载到内存，因此启动 WINCE 时完全绕开了 DOS，不受 DOS 驱动体系的限制，运行环境更干净。相反，通过 loadcepc.EXE 启动 WINCE 则需要 DOS 环境，受制于 DOS 驱动，部分驱动无法正常工作——这正是 bootloader 方式驱动完好的原因。bootloader 似乎只能在 Virtual PC 上正常引导系统，支持最大 128 MB 镜像，功能体验相对完整；而 loadcepc.EXE 可运行于各类通用虚拟机，但最大仅兼容 64 MB 镜像，功能虽精简，运行却更流畅。这便是两种 WINCE 镜像启动方式的根本区别。</p>
+
+<p class="normal-text" style="margin-left:40.5pt;">接下来我将演示，如何制作兼容loadcepc.EXE的镜像，兼容 VMware 等通用虚拟机</p>
+
+<h3 class="sec2">1) 重启Visual Studio并创建新项目</h3>
+<p class="normal-text" style="margin-left:71.6pt;">我们<b>依然不能在原有的项目进行修改</b>，因为我们仍要需要取消勾选很多选项，<b>否则会导致镜像大小超过 64 MB，导致启动不了</b>。这会导致变的事情更复杂，所以我们仍要和第七部分一样需要新建一个干净的项目，之后的步骤基本上和之前一样，但有一些小改动。</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 我们先要重启一下 Microsoft Visual Studio 2008 </p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="517" height="337" src="img/wec7peiz/image143.png" alt="重启VS">
+    <img border="0" width="431" height="539" src="img/wec7peiz/image144.png" alt="开始菜单VS">
+</p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 打开之后，我们要新建项目</p>
+<p class="step-content" style="margin-left:71.6pt;">在左上角的菜单栏中 逐步选择 文件 &gt; 新建 &gt; 项目</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="460" height="405" src="img/wec7peiz/image145.png" alt="新建项目菜单" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 这时，会打开“新建项目”窗口，和第一次一样选择，名称和路径可自定义但一定要记住，这里我保持默认，然后点击确定</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="804" height="610" src="img/wec7peiz/image199.png" alt="新建通用项目" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 又弹出“创建系统设计”的欢迎窗口，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image147.png" alt="创建向导" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 出现“板级支持包 (BSP)”的选择界面，<b>选择第二个选项“Generic CEPC : x86”</b>，点击下一步</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image200.png" alt="Generic CEPC BSP" class="img-block"></p>
+
+<!-- 两个分支并行说明 -->
+<table border="0" cellspacing="0" cellpadding="0" style="margin-left:71.6pt; border-collapse:collapse;">
+    <tr>
+        <td valign="top" style="width:594.25pt; padding:0cm 5.4pt;">
+            <p style="margin-left:22pt; text-indent:-22pt;"><span style="font-family:Wingdings; color:blue;">l </span><span style="color:blue;">选择“Handheld”模板的步骤</span></p>
+        </td>
+        <td valign="top" style="width:21cm; padding:0cm 5.4pt;">
+            <p style="margin-left:22pt; text-indent:-22pt;"><span style="font-family:Wingdings; color:blue;">l </span><span style="color:blue;">选择“Embedded Device with Silverlight XAML”模板的步骤</span></p>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;">
+            <p style="margin-left:71.6pt; text-indent:-22pt;">6. 出现“设计模板”的界面，将“Enterprise Device”展开，然后选择“Handheld”，</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image201.png" alt="Handheld模板"></p>
+            <p style="margin-left:71.6pt; text-indent:-22pt;">7. 为了兼顾体验与体积，在“应用程序与媒体”界面，我们仅保留</p>
+            <p style="margin-left:71.6pt;">File Cache Manager、Internet Browser、WordPad</p>
+            <p style="margin-left:71.6pt;">点击下一步</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image203.png" alt="Handheld应用选择"></p>
+            <p style="margin-left:71.6pt; text-indent:-22pt;">8. 在“Networking and Communications”界面，由于前面已经说过：驱动问题，这里的功能在通用虚拟机看来是摆设，所以全部取消勾选，点击下一步</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image204.png" alt="网络取消"></p>
+        </td>
+        <td valign="top" style="padding:0cm 5.4pt;">
+            <p style="margin-left:71.6pt; text-indent:-22pt;">6. “用户界面屏幕尺寸”界面中，勾选“尺寸”，然后保持默认“800 x 480 横向”第二个选项，然后点击下一步</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image150.png" alt="分辨率"></p>
+            <p style="margin-left:71.6pt; text-indent:-22pt;">7. “应用程序”界面中，首先勾选“示例主屏幕 (Sample Home Screen)”，然后剩余的全部勾上，因为这里的功能不占空间，而且也是体验必须的</p>
+            <p style="margin-left:71.6pt;">点击下一步</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image151.png" alt="SL应用"></p>
+        </td>
+    </tr>
+</table>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">9. 接着和之前一样到了完全一样的结束向导的界面，直接点击完成，不要勾选任何选项</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="627" height="642" src="img/wec7peiz/image152.png" alt="完成向导" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">10. 接着又会弹出安全警告的窗口，直接选择“我已知晓”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="535" height="411" src="img/wec7peiz/image153.png" alt="安全警告" class="img-block"></p>
+
+<h3 class="sec2">2) 定制</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 然后出现了 VS的主界面，接下来我们就要设置中文了</p>
+<p class="step-content" style="margin-left:71.6pt;">设置中文的步骤和之前 第三部分 的 步骤1、2 大部分一样，可以查看之前的教程，这里说明几点不同</p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">a) 在选择中文字体时，<b>只选择“SimSun &amp; NSimSun（宋体和新宋体）”字体</b>，其他不要选择，<span class="red">这是关键！因为 微软雅黑 字体比 宋体 占用大 10MB ！</span></p>
+<p class="step-content-indent" style="margin-left:93.6pt;"><img border="0" width="445" height="574" src="img/wec7peiz/image205.png" class="red" alt="仅选宋体" class="img-block"></p>
+<p class="step-content-indent" style="margin-left:93.6pt; text-indent:-22pt;">b) 在“国际化”的目录时，只选择：</p>
+<p class="step-content-indent" style="margin-left:93.6pt;">“GB18030 Data Converter”、“East Asian Edit Control”、“East Asian Word Wrap”、“1.1 MB - Minimal Database”、“Chinese (PRC)”、“Chinese (Simplified)”</p>
+<p class="step-content-indent" style="margin-left:93.6pt;">其他都不要</p>
+<p class="step-content-indent" style="margin-left:93.6pt;"><img border="0" width="449" height="574" src="img/wec7peiz/image206.png" alt="国际化精简" class="img-block"></p>
+
+<!-- 两个模板的进一步定制 -->
+<table border="0" cellspacing="0" cellpadding="0" style="margin-left:71.6pt; border-collapse:collapse;">
+    <tr>
+        <td valign="top" style="width:594.25pt; padding:0cm 5.4pt;">
+            <p style="margin-left:22pt; text-indent:-22pt;"><span style="font-family:Wingdings; color:blue;">l </span><span style="color:blue;">选择“Handheld”模板的步骤</span></p>
+        </td>
+        <td valign="top" style="width:21cm; padding:0cm 5.4pt;">
+            <p style="margin-left:22pt; text-indent:-22pt;"><span style="font-family:Wingdings; color:blue;">l </span><span style="color:blue;">选择“Embedded Device with Silverlight XAML”模板的步骤</span></p>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top" style="padding:0cm 5.4pt;">
+            <p style="margin-left:71.6pt; text-indent:-22pt;">2. 展开：·Core OS（核心操作系统） &gt; ·Windows Embedded Compact &gt; ·Applications - End User（最终用户应用程序）</p>
+            <p style="margin-left:71.6pt;">这里我们依然仅选择</p>
+            <p style="margin-left:71.6pt;">“ActiveSync”、“Help”、“Remote Desktop Protocol (RDP)”、“WordPad”</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="446" height="572" src="img/wec7peiz/image207.png" alt="应用程序精简"></p>
+            <p style="margin-left:71.6pt; text-indent:-22pt;">3. 展开： ·Core OS（核心操作系统） &gt; ·Graphics and Multimedia Technologies（图形与多媒体技术） &gt; ·Media &gt; ·Windows Media Player &gt; ·Windows Media Player Applications（媒体播放器应用程序）</p>
+            <p style="margin-left:71.6pt;">这里仅勾选“Windows Music Player”、“Windows Photo Viewer”、“Windows Video Player”</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="447" height="578" src="img/wec7peiz/image208.png" alt="媒体精简"></p>
+            <p style="margin-left:71.6pt; text-indent:-22pt;">4. 最后把 Windows XP 皮肤 勾上</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="460" height="575" src="img/wec7peiz/image209.png" alt="XP皮肤"></p>
+        </td>
+        <td valign="top" style="padding:0cm 5.4pt;">
+            <p style="margin-left:71.6pt; text-indent:-22pt;">2. 展开 ·Core OS（核心操作系统） &gt; ·Shell and User Interface（外壳与用户界面） &gt; ·User Interface（用户界面）</p>
+            <p style="margin-left:71.6pt;">将这里除了“Network Connection Setting”、“Network User Interface”的全部勾上</p>
+            <p style="margin-left:71.6pt;"><img border="0" width="443" height="584" src="img/wec7peiz/image210.png" alt="SL UI设置"></p>
+        </td>
+    </tr>
+</table>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">5. 由于镜像添加驱动在通用虚拟机看来就是摆设，<b>所以我们不要添加</b></p>
+
+<h3 class="sec2">3) 编译镜像</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 现在就可以编译了，点击 生成解决方案 ，编译的方式也是和之前一样</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="340" height="418" src="img/wec7peiz/image156.png" alt="生成" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 当底部“输出”工具查看出现“========== 生成: 成功或最新1 个，失败0 个，跳过0 个==========”</p>
+<p class="step-content" style="margin-left:71.6pt;">说明编译成功</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="411" height="136" src="img/wec7peiz/image211.png" alt="编译成功" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">生成的镜像在“C:\WINCE700\OSDesigns\OSDesign3\OSDesign3\RelDir\CEPC_x86_Release”</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="600" height="35" src="img/wec7peiz/image212.png" alt="镜像路径" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">可以看到，生成的镜像大小为60 MB，没有超过 64 MB ！</p>
+
+<h3 class="sec2">4) 制作通用启动镜像</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 现在我们已经有了可以在通用虚拟机上启动的镜像了，但要启动镜像，我们还需要 DOS 系统的 LOADCEPC.EXE，这意味着您要输入目录（如“loadcepc /L:800x480x16 NK.bin”），考虑到时间原因、便携性、方便性，作者特意做了一个DOS启动盘模板（.ISO格式），一启动并插入镜像到虚拟机，就会显示中文化菜单，只要选择对应的选项就会以对应的模式启动，也可以可视化的自定义分辨率和色深，不要手敲代码了，这个菜单是作者编写的</p>
+<p class="step-content" style="margin-left:71.6pt;">可以看到您从网盘下载的当前目录的叫“moban.iso”的文件就是作者做的模板了!</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="601" height="33" src="img/wec7peiz/image213.png" alt="moban.iso" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">我们还需要准备一个工具，也在您下载的当前目录叫“UltraISO-9.7.6.3860-CN.exe”，这是 软碟通，专门处理光驱的工具 ，但它不用安装，因为它是绿色版，打开会释放文件到临时目录，然后直接运行</p>
+<p class="step-content" style="margin-left:71.6pt;">现在就可以把它打开了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="579" height="29" src="img/wec7peiz/image214.png" alt="UltraISO" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 现在就会出现了这个窗口，这就是 软碟通 的界面了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="785" height="576" src="img/wec7peiz/image215.png" alt="软碟通界面" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">在菜单栏中逐步点击 文件 &gt; 打开</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="331" height="445" src="img/wec7peiz/image216.png" alt="文件菜单" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">然后就会弹窗浏览文件的窗口，在这里导航到“moban.iso”的目录，并选定，然后点击“打开”按钮</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="827" height="529" src="img/wec7peiz/image217.png" alt="打开moban.iso" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 然后就会发现此光盘“moban.iso”里没有任何文件，是因为引导文件是写在了光盘的引导信息里，所以看不见它，但建议不要修改此光盘的引导信息，否则可能会启动不了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="785" height="576" src="img/wec7peiz/image218.png" alt="空光盘" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">现在我们要把“NK.BIN”添加到这里</p>
+<p class="step-content" style="margin-left:71.6pt;">打开资源管理器到“C:\WINCE700\OSDesigns\OSDesign3\OSDesign3\RelDir\CEPC_x86_Release”，然后找到“NK.BIN”，然后将此文件拖到UltraISO窗口的文件区 或者 复制粘贴（CTRL + C 或 V）</p>
+<p class="step-content" style="margin-left:71.6pt;">然后点击保存</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="785" height="576" src="img/wec7peiz/image219.png" alt="添加NK.BIN" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">4. 回到 “moban.iso”的目录，就会发现，此ISO文件的文件大小变大了</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="588" height="92" src="img/wec7peiz/image220.png" alt="ISO变大" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">现在，我们的WINCE通用启动镜像就做好了！</p>
+
+<h3 class="sec2">5) 启动通用镜像</h3>
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">1. 现在我们使用VMware虚拟机启动这个镜像</p>
+<p class="step-content" style="margin-left:71.6pt;">首先我们要添加我们的镜像文件到虚拟机的光驱</p>
+<p class="step-content" style="margin-left:71.6pt;">这是我的VMware虚拟机启动配置，给您一些参考：</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="290" height="217" src="img/wec7peiz/image221.png" alt="VMware配置" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">2. 然后启动它，就会显示以下界面</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="720" height="400" src="img/wec7peiz/image222.png" alt="启动DOS" class="img-block"></p>
+<p class="step-content" style="margin-left:71.6pt;">然后屏幕变成640x480，就到了作者做的中文的WINCE启动菜单</p>
+<p class="step-content" style="margin-left:71.6pt;"><img border="0" width="640" height="480" src="img/wec7peiz/image223.png" alt="中文菜单" class="img-block"></p>
+
+<p class="step-content" style="margin-left:71.6pt; text-indent:-22pt;">3. 我们直接使用鼠标点击第一个选项：“以 800×480（横屏）色深 16 启动”，或者直接按回车</p>
+<p class="step-content" style="margin-left:71.6pt;">然后就会显示LOADCEPC自带的启动进度条，一会儿后就会进入界面，</p>
+<p class="step-content" style="margin-left:71.6pt;">不得不说使用VMware虚拟机 + LOADCEPC.EXE 启动WinCE是真的快，几秒就完成了，和VPC虚拟机 + bootloader 的几分钟相比是天壤之别</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="1062" height="593" src="img/wec7peiz/image224.png" alt="启动进度">
+    <img border="0" width="1062" height="593" src="img/wec7peiz/image225.png" alt="WinCE桌面">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">在这里依然可以体验大部分功能，但是不能联网、听声音、存储读取外来设备</p>
+<p class="step-content" style="margin-left:71.6pt;">再看看Silverlight版本的通用镜像</p>
+<p class="step-content" style="margin-left:71.6pt;">
+    <img border="0" width="1062" height="593" src="img/wec7peiz/image226.png" alt="SL桌面1">
+    <img border="0" width="1062" height="593" src="img/wec7peiz/image227.png" alt="SL桌面2">
+</p>
+<p class="step-content" style="margin-left:71.6pt;">可以看到字体变成“宋体”了，但依然很协调，变的更有严肃感</p>
+
+<!--------------- 第九部分：打包 --------------->
+<h2 class="sec1">九、 打包镜像</h2>
+<p class="normal-text" style="margin-left:29.6pt;">现在我们已经学会了如何制作WINCE 7.0镜像了，就到了打包步骤（作者已经把所有做好的镜像放到了网盘，您可以自行下载体验，包括 VPC专用镜像虚拟磁盘 和 通用虚拟机启动镜像）</p>
+
+<h3 class="sec2">1) 打包Virtual PC虚拟机专用WINCE 7启动虚拟磁盘（VHD）</h3>
+<p class="step-content" style="margin-left:71.6pt;">这一部分已经在第四部分详细提及，这里不再介绍，最终的“hd0_sample.vhd”就是Virtual PC虚拟机专用的WINCE 7启动虚拟磁盘</p>
+
+<h3 class="sec2">2) 打包 通用虚拟机 专用WINCE 7启动光盘（ISO）</h3>
+<p class="step-content" style="margin-left:71.6pt;">这一部分已经在第八部分详细提及，这里不再介绍，最终的“moban.iso”就是 通用虚拟机 专用WINCE 7启动光盘</p>
+
+<!--------------- 第十部分：总结 --------------->
+<h2 class="sec1">十、 总结</h2>
+<p class="normal-text" style="margin-left:30.05pt;">到这里，这篇详细的 Windows Embedded Compact 7 虚拟机镜像制作教程就全部结束了。我们从准备好 Visual Studio 2008 开发环境开始，一步一步完成了项目创建、组件定制、汉化设置、编译生成，再到在 Virtual PC 和 VMware 中成功启动我们自己亲手打造的 WEC7 中文版镜像，整个过程虽然有些漫长，但只要跟着操作，就一定能顺利跑起来。</p>
+
+<p class="normal-text" style="margin-left:30.05pt;">回顾下来，这篇教程主要带您走过了这样几条路：</p>
+
+<p class="step-content" style="margin-left:62.5pt; font-size:18pt; color:blue; font-weight:bold;">1) 第一遍完整流程</p>
+<p class="step-content" style="margin-left:62.5pt;">从零创建 Virtual PC 专用镜像，选择“Virtual PC : x86”板级支持包和 Handheld 模板，设置简体中文（特别注意区域和字体的选择），编译出可启动的 NK.bin，再通过定制虚拟磁盘和修改启动配置，成功在 Virtual PC 中运行了最基础的 WinCE 7.0 中文版。</p>
+
+<p class="step-content" style="margin-left:62.5pt; font-size:18pt; color:blue; font-weight:bold;">2) 添加驱动与功能</p>
+<p class="step-content" style="margin-left:62.5pt;">在基础镜像上，我们补充了音频、键盘、网络、存储等关键驱动，以及 FAT 文件系统、基于蜂巢的注册表、分区驱动等，让系统能够保存设置、读写硬盘；同时加入了 Windows XP 风格皮肤、Windows Media Player 系列应用和其他常用程序，使镜像更加实用和美观</p>
+
+<p class="step-content" style="margin-left:62.5pt; font-size:18pt; color:blue; font-weight:bold;">3) Silverlight 版镜像</p>
+<p class="step-content" style="margin-left:62.5pt;">为了体验 WEC7 最亮眼的 Silverlight 外壳，我们另建项目，选取“Embedded Device with Silverlight XAML”模板，同样完成汉化和驱动添加，并调整分辨率，成功运行起了比默认外壳漂亮得多的 Silverlight 版系统，还欣赏了多种分辨率和主题下的界面效果</p>
+
+<p class="step-content" style="margin-left:62.5pt; font-size:18pt; color:blue; font-weight:bold;">4) 通用虚拟机镜像</p>
+<p class="step-content" style="margin-left:62.5pt;">考虑到兼容性，我们又用“Generic CEPC : x86”板级支持包制作了适用于 VMware 等通用虚拟机的镜像，严格控制体积在 64 MB 以内，搭配作者做好的中文 DOS 启动菜单光盘模板，实现了在 VMware 中几秒钟快速启动 WinCE 的体验，虽然不支持网络和声音，但更加轻便流畅</p>
+
+<p class="normal-text" style="margin-left:41.45pt; font-size:18pt; color:blue;">在整个过程中，有一些地方值得特别记住：</p>
+<p class="step-content" style="margin-left:63.45pt; text-indent:-22pt;"><span style="font-family:Wingdings;">l </span>选择 BSP 和设计模板时一定要和使用的虚拟机相匹配，Virtual PC 就用 VPC 专用的 BSP，通用虚拟机则选 Generic CEPC，否则可能出现错误。</p>
+<p class="step-content" style="margin-left:63.45pt; text-indent:-22pt;"><span style="font-family:Wingdings;">l </span>汉化时“简体中文”区域选项千万不要错选成 Chinese (PRC)；字体方面，通用镜像为了节省空间最好只保留宋体，VPC 镜像则可以同时带上微软雅黑。</p>
+<p class="step-content" style="margin-left:63.45pt; text-indent:-22pt;"><span style="font-family:Wingdings;">l </span>编译前记得备份 .pbxml 项目文件，遇到问题可以随时回退；编译新镜像前先执行“清理解决方案”，可以避免很多莫名其妙的错误。</p>
+
+<p class="normal-text" style="margin-left:21pt;">希望这篇从环境准备到打包体验的完整记录，能够帮助您顺利制作出属于自己的 Windows Embedded Compact 7 虚拟机镜像。不管是用来学习还是怀旧，自己亲手构建并启动一个系统，都是一件特别有成就感的事情。如果您还想继续深入，可以借助“OSDesign 架构树形图翻译”文档，定制出更多功能、更适合自己需求的专属 WinCE 7 镜像。祝玩得开心！</p>
+
+<p class="normal-text" style="margin-left:21pt;">这几篇教程难免可能会有些错误和疏忽，希望大家多多指导！</p>
+<p class="normal-text" style="margin-left:21pt;">如有不足，欢迎指出！</p>
+
+<p class="final-text">至此，Windows Embedded Compact 7 虚拟机镜像制作详细教程已经完成！</p>
+<p class="final-text">感谢观看！</p>
+
+<p class="author">
+    <a href="https://space.bilibili.com/3546662595201297" target="_blank" rel="noopener noreferrer">
+        <span class="author-light">By SYSTEM-</span><b>SZ</b><b> · </b><span class="author-light">bilibili</span>
+    </a>
+</p>
+
+</body>
+</html>

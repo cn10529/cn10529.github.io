@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows Embedded Compact 7 开发环境安装详细教程</title>
+    <style>
+        body {
+            font-family: 宋体, SimSun, serif;
+            margin: 72pt 90pt;
+            word-wrap: break-word;
+            word-break: break-word;
+        }
+        h1 {
+            font-size: 36pt;
+            color: blue;
+            font-weight: bold;
+            font-family: 宋体, SimSun, serif;
+            margin: 0 0 18pt 0;
+        }
+        .index-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24pt;
+        }
+        .index-table td {
+            border: 1pt solid blue;
+            padding: 8pt 12pt;
+            vertical-align: top;
+        }
+        .index-title {
+            font-size: 20pt;
+            font-weight: bold;
+            color: blue;
+            font-family: 宋体, SimSun, serif;
+        }
+        .index-item {
+            font-size: 12pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 57pt;
+            text-indent: -36pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .index-sub {
+            font-size: 11pt;
+            color: black;
+            margin-left: 84pt;
+            text-indent: -27pt;
+        }
+        .sec1 {
+            font-size: 26pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 40.5pt;
+            text-indent: -40.5pt;
+            margin-top: 24pt;
+            margin-bottom: 12pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .sec2 {
+            font-size: 18pt;
+            color: blue;
+            font-weight: bold;
+            margin-left: 66pt;
+            text-indent: -22pt;
+            margin-top: 16pt;
+            margin-bottom: 8pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .step-title {
+            font-size: 14pt;
+            color: black;
+            margin-left: 88pt;
+            text-indent: -22pt;
+            margin-top: 6pt;
+            margin-bottom: 4pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .step-content {
+            font-size: 14pt;
+            color: black;
+            margin-left: 88pt;
+            margin-bottom: 6pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .step-content-indent {
+            font-size: 14pt;
+            color: black;
+            margin-left: 151.5pt;
+            margin-bottom: 6pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .normal-text {
+            font-size: 14pt;
+            color: black;
+            margin-top: 6pt;
+            margin-bottom: 6pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .final-text {
+            font-size: 22pt;
+            color: gray;
+            text-align: center;
+            font-family: 宋体, SimSun, serif;
+            margin: 24pt 0 8pt 0;
+        }
+        .sub-final {
+            font-size: 16pt;
+            color: #BFBFBF;
+            text-align: center;
+            font-family: 宋体, SimSun, serif;
+            margin-bottom: 24pt;
+        }
+        .author {
+            font-size: 24pt;
+            color: #7F7F7F;
+            text-align: center;
+            font-family: "微软雅黑", sans-serif;
+            margin-top: 0;
+        }
+        .author-light {
+            font-family: "微软雅黑 Light", sans-serif;
+            font-weight: normal;
+        }
+        .author a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .author a:hover {
+            text-decoration: underline;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 8pt 0;
+        }
+        .inline-img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Windows Embedded Compact 7 开发环境安装详细教程</h1>
+
+<table class="index-table">
+    <tr>
+        <td>
+            <div class="index-title">索引</div>
+            <div class="index-item">一、 Visual Studio 2008 SP1 安装与激活</div>
+            <div class="index-sub">1) 安装</div>
+            <div class="index-sub">2) 激活</div>
+            <div class="index-sub">3) 升级到SP1 版本（必须！）</div>
+            <div class="index-item">二、 Windows Embedded Compact 7 安装</div>
+            <div class="index-sub">1) 准备安装</div>
+            <div class="index-sub">2) 开始安装</div>
+            <div class="index-item">三、 Virtual PC 2007 SP1 安装、设置中文</div>
+            <div class="index-sub">1) 安装主体</div>
+            <div class="index-sub">2) 安装中文语言包</div>
+            <div class="index-sub">3) 设置中文语言</div>
+        </td>
+    </tr>
+</table>
+
+<!--------------- 第一部分 --------------->
+<h2 class="sec1">一、 Visual Studio 2008 SP1 安装与激活</h2>
+
+<h3 class="sec2">1) 安装</h3>
+<p class="normal-text" style="margin-left:66pt;">这是您从网盘下载的文件：</p>
+<p class="step-content-indent"><img src="img/wec700anz/image001.png" alt="下载的文件列表"></p>
+<p class="normal-text" style="margin-left:66pt;">下面的教程是详细的安装、激活、升级的步骤：</p>
+
+<div class="step-title">● 安装 .NET Framework 3.5 运行库</div>
+<p class="step-content">首先检查有没有安装 .NET Framework 3.5 运行库，若没有安装请按照以下步骤操作：</p>
+<p class="step-content-indent">1. 双击</p>
+<p class="step-content-indent"><img src="img/wec700anz/image002.png" alt=".NET Framework 安装文件"></p>
+<p class="step-content-indent">2. 右击以管理员身份运行</p>
+<p class="step-content-indent"><img src="img/wec700anz/image003.png" alt="管理员运行"></p>
+<p class="step-content-indent">3. 安装</p>
+<p class="step-content-indent"><img src="img/wec700anz/image004.png" alt="安装进度1"></p>
+<p class="step-content-indent"><img src="img/wec700anz/image005.png" alt="安装进度2"></p>
+<p class="step-content-indent"><img src="img/wec700anz/image006.png" alt="安装完成"></p>
+
+<div class="step-title">● 安装 Visual Studio 2008</div>
+<p class="step-content">现在开始正式安装 VS 2008 的主体</p>
+<p class="step-content-indent">1. 使用压缩软件解压或直接打开当前镜像文件</p>
+<p class="step-content-indent"><img src="img/wec700anz/image007.png" alt="VS2008镜像文件"></p>
+<p class="step-content-indent"><img src="img/wec700anz/image008.png" alt="镜像内容"></p>
+<p class="step-content-indent">2. 向下滑动，找到“setup.exe”,右击以管理员身份运行</p>
+<p class="step-content-indent"><img src="img/wec700anz/image009.png" alt="找到setup.exe"></p>
+<p class="step-content-indent">3. </p>
+<p class="step-content-indent"><img src="img/wec700anz/image010.png" alt="安装向导首页"></p>
+<p class="step-content-indent"><img src="img/wec700anz/image011.png" alt="开始安装"></p>
+<p class="step-content-indent"><img src="img/wec700anz/image012.png" alt="安装选项1"></p>
+<p class="step-content-indent"><img src="img/wec700anz/image013.png" alt="安装选项2"></p>
+<p class="step-content-indent">这里可以自定义调整，我这里安装默认的来安装</p>
+<p class="step-content-indent"><img src="img/wec700anz/image014.png" alt="默认安装"></p>
+<p class="step-content-indent">4. 现在就开始安装了，此操作可能会花费十几分钟，请您耐心等待！</p>
+<p class="step-content-indent"><img src="img/wec700anz/image015.png" alt="安装进行中"></p>
+<p class="step-content-indent">5. 若您看到了这个界面，说明 VS 2008 已经成功安装，点击“完成”</p>
+<p class="step-content-indent"><img src="img/wec700anz/image016.png" alt="安装完成"></p>
+<p class="step-content-indent">6. 此时，会退回到此界面，但不要退出，放在旁边备用，若您已经退出，请重新找到“setup.exe”,右击以管理员身份运行</p>
+<p class="step-content-indent"><img src="img/wec700anz/image017.png" alt="保留安装界面"></p>
+
+<h3 class="sec2">2) 激活</h3>
+<p class="normal-text" style="margin-left:76.5pt;">现在，VS 2008 已经成功的安装了，但现在仍是 90 天试用期，超过90天，程序将强制让您激活，否则程序会自动退出</p>
+
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">1. 回到这个界面，打开“激活工具”文件夹</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image018.png" alt="激活工具文件夹"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">2. 以管理员身份打开“UpgradeVs2008.exe”</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image019.png" alt="升级程序"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">3. 此时会出现这个窗口，先放在旁边备用</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image020.png" alt="激活工具界面"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">4. 再次回到刚才保留vs安装程序窗口，再次点击第一个选项</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image021.png" alt="安装程序窗口"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">5. 这时候出现了再次出现了这个界面，但不要点击下一步，若您已经点击，请重启安装程序</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image022.png" alt="序列号界面"></p>
+<p class="step-content-indent" style="margin-left:102pt;">回到激活工具，点击“写入序列号并激活”</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image023.png" alt="写入序列号"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">6. 此时回到安装界面，就可以点击下一步了</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image011.png" alt="点击下一步"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">7. 然后就会发现这里多了一个选项，说明您已经成功的操作了，点击“升级”按钮</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image024.png" alt="升级选项"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">8. 此时会花费一些时间，就会跳转到这个界面，点击“完成”，就激活成功了</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image025.png" alt="激活完成"></p>
+<p class="step-content-indent" style="margin-left:103.05pt; text-indent:-18pt;">9. 此时，就可以点击“退出”了</p>
+<p class="step-content-indent" style="margin-left:102pt;"><img src="img/wec700anz/image026.png" alt="退出安装程序"></p>
+<p class="normal-text" style="margin-left:76.5pt;">貌似激活只能维持128天，128天后仍要重复此操作，所以激活工具和安装程序要时刻准备好</p>
+
+<h3 class="sec2">3) 升级到SP1 版本（必须！）</h3>
+<p class="normal-text" style="margin-left:61.55pt;">升级到 SP1 版本就会有更多功能，而且，也是 Windows Embedded Compact 7 所必须的环境</p>
+
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">1. 回到这个界面，打开“VS2008_SP1_升级补丁”文件夹</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image027.png" alt="SP1补丁文件夹"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">2. 解压或直接打开此镜像文件</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image028.png" alt="SP1镜像"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">3. 然后打开“vs90sp1”文件夹</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image029.png" alt="进入vs90sp1"></p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image030.png" alt="vs90sp1内容"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">4. 向下滚动找到“SPInstaller.exe”，右击以管理员身份运行</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image031.png" alt="找到SPInstaller"></p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image032.png" alt="管理员运行SPInstaller"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">5. 出现了这个窗口，点击“下一步”</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image033.png" alt="SP1安装向导"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">6. 勾选协议，然后继续下一步</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image034.png" alt="协议"><img src="img/wec700anz/image035.png" alt="下一步"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">7. 此时，就已经开始安装了，此操作仍然需要几十分钟，请您耐心等待！</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image036.png" alt="SP1安装进度"></p>
+<p class="step-content" style="margin-left:92.85pt; text-indent:-22pt;">8. 出现这个界面，点击“完成”</p>
+<p class="step-content-indent" style="margin-left:92.85pt;"><img src="img/wec700anz/image037.png" alt="SP1安装完成"></p>
+
+<!--------------- 第二部分 --------------->
+<h2 class="sec1">二、 Windows Embedded Compact 7 安装</h2>
+<p class="normal-text" style="margin-left:40.5pt;">安装之前请先检查有没有安装 VS 2008 SP1，安装环境是否为 Windows 7，若没有，请参照 VS2008安装教程 来安装，注意版本VS必须是SP1，否则将不能安装</p>
+<p class="normal-text" style="margin-left:40.5pt;">这是您从网盘下载的文件：</p>
+<p class="step-content-indent" style="margin-left:40.5pt;"><img src="img/wec700anz/image038.png" alt="WEC7下载文件"></p>
+<p class="normal-text" style="margin-left:40.5pt;">下面的教程是详细的安装的步骤：</p>
+
+<h3 class="sec2">1) 准备安装</h3>
+<p class="step-content-indent" style="margin-left:117pt; text-indent:-54pt;">1. 解压当前文件，进入目录</p>
+<p class="step-content-indent" style="margin-left:63pt; text-indent:21pt;"><img src="img/wec700anz/image039.png" alt="解压目录"></p>
+<p class="step-content-indent" style="margin-left:117pt; text-indent:-54pt;">2. 进入文件夹“Microsoft Windows Embedded Compact 7”</p>
+<p class="step-content-indent" style="margin-left:63pt; text-indent:21pt;"><img src="img/wec700anz/image040.png" alt="进入WEC7文件夹"></p>
+<p class="step-content-indent" style="margin-left:63pt; text-indent:21pt;">就可以看到以下文件，这就是完整的 Windows Embedded Compact 7 开发环境安装包，这3个文件缺一不可：</p>
+<p class="step-content-indent" style="margin-left:84pt;"><img src="img/wec700anz/image041.png" alt="三个文件"></p>
+<p class="step-content-indent" style="margin-left:63pt; text-indent:21pt;">将“dvd1.iso”“dvd2.iso”，分别解压或挂载镜像，放在旁边备用</p>
+
+<h3 class="sec2">2) 开始安装</h3>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">1. 进入“dvd1.iso”或解压的目录，得到以下文件</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image042.png" alt="DVD1内容"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">2. 找到“WindowsEmbeddedCompact7.exe”，然后以管理员身份运行</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image043.png" alt="管理员运行安装程序"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">就会出现以下界面</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image044.png" alt="安装启动"><img src="img/wec700anz/image045.png" alt="安装向导首页"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">3. 点击开始安装</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image046.png" alt="开始安装"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">4. 勾选协议后继续</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image047.png" alt="协议"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image048.png" alt="下一步"><img src="img/wec700anz/image049.png" alt="继续"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">5. 此时要求输入产品序列号，将刚才解压的目录中的“license.txt”打开，里面就是序列号，直接输入或粘贴即可(PW28V-TRKP8-RW8JQ-QG8MF-23C7F），然后点击下一步</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image050.png" alt="序列号文件"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image051.png" alt="输入序列号"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">6. 然后就会出现这个界面，因为有一些功能我们是用不到的，因为我们只要在虚拟机中运行，为了节省磁盘空间，我们选择自定义安装，然后点击下一步</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image052.png" alt="自定义安装"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image053.png" alt="选项界面"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">7. 由于我们的主要目的是要在虚拟机中体验，所以只要核心部分 + x86 架构，选择前面4个选项+最后一个选项，然后点击下一步</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image054.png" alt="选择组件1"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image055.png" alt="选择组件2"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">8. 现在到了准备就绪的界面了，检查无误后（注意磁盘的剩余空间，空间不足会报错），点击“Install”开始安装</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image056.png" alt="准备就绪"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image057.png" alt="安装开始"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">9. 现在，安装正式开始，不出意料的话肯定会填出下面的弹窗</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image058.png" alt="安装过程"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image059.png" alt="插入DVD2提示"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">10. 这个窗口是在提示我们需要插入 扩展资源镜像 也就是一开始解压目录的“dvd2.iso”，现在就排上用场了</p>
+<p class="step-content-indent" style="margin-left:82.1pt;">请先确保您已经插入“dvd2.iso”或已经解压到目录，然后点击“Browse...”浏览的按钮</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image060.png" alt="浏览按钮"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">在“浏览文件夹”窗口中进入“dvd2.iso”或者解压的目录，然后逐步展开“OS\processor\x86\”文件夹，然后点击“确定”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;">
+    <img src="img/wec700anz/image061.png" alt="步骤1" class="inline-img">
+    <img src="img/wec700anz/image062.png" alt="步骤2" class="inline-img">
+    <img src="img/wec700anz/image063.png" alt="步骤3" class="inline-img">
+    <img src="img/wec700anz/image064.png" alt="步骤4" class="inline-img">
+</p>
+<p class="step-content-indent" style="margin-left:82.1pt;">回到了这个界面，现在点击“OK”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image065.png" alt="点击OK"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">就会发现正常继续安装了，此过程可能会花费十几分钟，希望您耐心等待！</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image066.png" alt="继续安装"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">11. 当您看到这个界面时，就说明Windows Embedded Compact 7 的开发环境已经成功地安装了，直接点击“Finish”完成按钮完成安装</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image067.png" alt="安装完成"></p>
+
+<!--------------- 第三部分 --------------->
+<h2 class="sec1">三、 Virtual PC 2007 SP1 安装、设置中文</h2>
+<p class="normal-text" style="margin-left:40.5pt;">安装之前请先检查安装环境是否为 Windows 7，否则程序将不能正常工作。之所以安装这个虚拟机，是因为它原生支持WindowsEmbeddedCompact7构建的镜像的驱动，体验感更加，也更兼容</p>
+<p class="normal-text" style="margin-left:40.5pt;">这是您从网盘下载的文件：</p>
+<p class="step-content-indent" style="margin-left:40.5pt;"><img src="img/wec700anz/image068.png" alt="VPC下载文件"></p>
+<p class="normal-text" style="margin-left:40.5pt;">下面的教程是详细的安装的步骤：</p>
+
+<h3 class="sec2">1) 安装主体</h3>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">1. 检查您的Windows系统是64还是32位，选择对应的版本运行</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image069.png" alt="选择系统位数"></p>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">2. 我这里以64位为例，以管理员身份运行</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image070.png" alt="管理员运行VPC安装"></p>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">3. 然后就会出现这个窗口，点击下一步</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image071.png" alt="安装向导"></p>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">4. 同意协议，然后点击下一步</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image072.png" alt="同意协议"></p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image073.png" alt="下一步"></p>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">5. 这是自定义您的信息的一步，可以直接保持默认，点击“下一步（Next）”</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image074.png" alt="用户信息"></p>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">6. 这是自定义安装位置的一步，若您想要自定义，请务必记住路径，后面汉化要用到，我这里保持默认，直接点击“安装 (Install)”开始安装</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image075.png" alt="安装位置"></p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image076.png" alt="安装进度"></p>
+<p class="step-content" style="margin-left:114.05pt; text-indent:-54pt;">7. 当出现了这个界面，说明安装完成了，直接点击“完成 (Finish)”以完成安装</p>
+<p class="step-content-indent" style="margin-left:73.5pt; text-indent:21pt;"><img src="img/wec700anz/image077.png" alt="安装完成"></p>
+
+<h3 class="sec2">2) 安装中文语言包</h3>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">1. 回到刚才的这个目录，以管理员身份运行“Virtual PC 2007 中文语言包.exe”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image078.png" alt="语言包文件"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">2. 出现了这个窗口</p>
+<p class="step-content-indent" style="margin-left:82.1pt;">选择您刚才的 Virtual PC 2007 SP1的安装的目录，我这里已经是默认的目录，所以不必修改，所以点击“安装”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image079.png" alt="选择安装目录"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">然后窗口可能会突然消失，这个现象说明安装成功完成，这是可能会跳转到一个网页，我们把它关闭即可</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image080.png" alt="跳转网页"></p>
+
+<h3 class="sec2">3) 设置中文语言</h3>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">1. 安装完成后桌面可能不会显示快捷方式，所以点开开始菜单，找到“Microsoft Virtual PC”的选项，点击</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image081.png" alt="开始菜单找到VPC"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image082.png" alt="VPC图标"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">就会出现以下界面</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image083.png" alt="VPC主界面"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">2. 这时可能会立刻弹出这个窗口，这个窗口的意思是新建虚拟机，可我们的目的并不是新建虚拟机，而是设置中文语言，所以点击cancel取消</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image084.png" alt="新建虚拟机窗口"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">回到这个界面，按我的步骤操作：</p>
+<p class="step-content-indent" style="margin-left:82.1pt;">在菜单栏点击“File”&gt;“Options”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image085.png" alt="File菜单"><img src="img/wec700anz/image086.png" alt="Options"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">这个窗口中在“Language”栏里，下拉框中选择“Simplified Chinese”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image087.png" alt="语言设置"><img src="img/wec700anz/image088.png" alt="选择简体中文"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">之后点击“OK”</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image089.png" alt="点击OK"></p>
+<p class="step-content" style="margin-left:82.05pt; text-indent:-22pt;">3. 然后重启程序</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image090.png" alt="重启VPC"></p>
+<p class="step-content-indent" style="margin-left:82.1pt;">按刚才的方式打开后，就会发现界面变成了中文</p>
+<p class="step-content-indent" style="margin-left:82.1pt;"><img src="img/wec700anz/image091.png" alt="中文新建虚拟机"><img src="img/wec700anz/image092.png" alt="中文主界面"></p>
+
+<p class="final-text">至此，Windows Embedded Compact 7 开发环境安装 已经全部完成！</p>
+<p class="final-text">感谢观看！</p>
+<p class="sub-final">请继续观看“Windows Embedded Compact 7 镜像制作详细教程”</p>
+
+<p class="author">
+    <a href="https://space.bilibili.com/3546662595201297" target="_blank" rel="noopener noreferrer">
+        <span class="author-light">By SYSTEM-</span><b>SZ</b><b> · </b><span class="author-light">bilibili</span>
+    </a>
+</p>
+
+</body>
+</html>
