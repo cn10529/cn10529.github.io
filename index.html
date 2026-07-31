@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>Windows Embedded Compact 7 完整教程索引</title>
+    <style>
+        body {
+            font-family: 宋体, SimSun, serif;
+            margin: 72pt 90pt;
+            word-wrap: break-word;
+            word-break: break-word;
+            background: #fff;
+            color: black;
+            line-height: 1.6;
+        }
+        h1 {
+            font-size: 36pt;
+            color: blue;
+            font-weight: bold;
+            font-family: 宋体, SimSun, serif;
+            margin: 0 0 18pt 0;
+            text-align: center;
+        }
+        .intro {
+            font-size: 14pt;
+            color: black;
+            margin-bottom: 24pt;
+            text-indent: 2em;
+        }
+        .index-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24pt;
+        }
+        .index-table td, .index-table th {
+            border: 1pt solid blue;
+            padding: 10pt 12pt;
+            vertical-align: top;
+            font-size: 14pt;
+            font-family: 宋体, SimSun, serif;
+        }
+        .index-table th {
+            font-weight: bold;
+            color: blue;
+            text-align: left;
+            font-size: 16pt;
+        }
+        .doc-title {
+            font-weight: bold;
+            color: blue;
+            font-size: 15pt;
+        }
+        .doc-desc {
+            color: black;
+            font-size: 14pt;
+            margin-top: 4pt;
+        }
+        .doc-link {
+            margin-top: 6pt;
+        }
+        .doc-link a {
+            color: blue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .doc-link a:hover {
+            text-decoration: underline;
+        }
+        .author {
+            font-size: 24pt;
+            color: #7F7F7F;
+            text-align: center;
+            font-family: "微软雅黑", sans-serif;
+            margin-top: 36pt;
+        }
+        .author-light {
+            font-family: "微软雅黑 Light", sans-serif;
+            font-weight: normal;
+        }
+        .author a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .author a:hover {
+            text-decoration: underline;
+        }
+        .note {
+            font-size: 14pt;
+            color: #666;
+            margin-top: 24pt;
+            border-top: 1px solid #ccc;
+            padding-top: 12pt;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Windows Embedded Compact 7 完整教程索引</h1>
+
+<p class="intro">
+    本索引汇总了三篇关于 Windows Embedded Compact 7（WEC7）的完整中文教程，涵盖从开发环境搭建、系统架构解析到镜像编译与运行的全过程。三篇文档建议按顺序阅读，亦可按需单独查阅。
+</p>
+
+<table class="index-table">
+    <tr>
+        <th style="width: 60pt; text-align: center;">序号</th>
+        <th>文档说明</th>
+    </tr>
+    <tr>
+        <td style="text-align: center; font-weight: bold; color: blue;">一</td>
+        <td>
+            <div class="doc-title">Windows Embedded Compact 7 开发环境安装详细教程</div>
+            <div class="doc-desc">
+                从零开始搭建 WEC7 开发环境：安装并激活 Visual Studio 2008 SP1、安装 Windows Embedded Compact 7 本体、安装 Virtual PC 2007 SP1 及中文语言包。所有步骤均配有图文说明，是后续镜像制作不可或缺的前置准备。
+            </div>
+            <div class="doc-link">
+                <a href="wec7anz.html">点击打开教程</a>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; font-weight: bold; color: blue;">二</td>
+        <td>
+            <div class="doc-title">Windows Embedded Compact 7 镜像制作详细教程</div>
+            <div class="doc-desc">
+                核心操作篇：创建 OS Design 项目、配置简体中文与字体、编译 NK.bin、定制虚拟磁盘（VHD）、修改启动配置。进一步讲解如何添加驱动与功能、构建 Silverlight 版镜像、制作兼容 VMware 的通用镜像，以及最终打包分发。内容最为详尽，建议在环境准备就绪后阅读。
+            </div>
+            <div class="doc-link">
+                <a href="wec7peiz.html">点击打开教程</a>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align: center; font-weight: bold; color: blue;">三</td>
+        <td>
+            <div class="doc-title">OSDesign 架构树形图翻译</div>
+            <div class="doc-desc">
+                Platform Builder 组件目录的完整中英对照手册。以树形结构梳理了 BSP（板级支持包）与 Core OS（核心操作系统）下的全部可选组件，并附有简明中文注释，是定制镜像时勾选组件的速查字典。
+            </div>
+            <div class="doc-link">
+                <a href="OSDesignfanyi.html">点击打开文档</a>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<p class="note">
+    建议阅读顺序：<b>一（环境安装）→ 二（镜像制作）→ 三（组件参考）</b>。若已具备开发环境，可直接查阅第二篇或第三篇。
+</p>
+
+<p class="author">
+    <a href="https://space.bilibili.com/3546662595201297" target="_blank" rel="noopener noreferrer">
+        <span class="author-light">By SYSTEM-</span><b>SZ</b><b> · </b><span class="author-light">bilibili</span>
+    </a>
+</p>
+
+</body>
+</html>
